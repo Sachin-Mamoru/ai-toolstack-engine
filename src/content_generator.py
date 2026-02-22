@@ -398,6 +398,10 @@ def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> st
                     max_output_tokens=8192,
                 ),
             )
+            if response.text is None:
+                raise ValueError(
+                    "Gemini returned None text (safety block or empty response)"
+                )
             return response.text
         except Exception as exc:
             if _is_permanent(exc):

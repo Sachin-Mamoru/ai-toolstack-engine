@@ -126,6 +126,7 @@ def main() -> None:
 
     tools = load_tools()
     affiliates = load_affiliates()
+    generated_count = 0
 
     for page_spec in to_generate:
         try:
@@ -135,12 +136,20 @@ def main() -> None:
                 generated["article_markdown"], page_spec, tools, affiliates
             )
             save_markdown(page_spec, generated)
+            generated_count += 1
         except Exception as exc:
             logger.error("Failed to generate %s: %s", page_spec["slug"], exc)
             # Continue with remaining pages rather than aborting the whole run
             continue
 
-    logger.info("Daily generation complete. Generated %d pages.", len(to_generate))
+    logger.info(
+        "Daily generation complete. Generated %d/%d pages.",
+        generated_count,
+        len(to_generate),
+    )
+    if generated_count == 0 and len(to_generate) > 0:
+        logger.error("All page generations failed. Exiting with error.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
