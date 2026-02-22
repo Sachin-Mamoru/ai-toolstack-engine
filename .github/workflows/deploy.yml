@@ -1,14 +1,6 @@
 name: Generate & Deploy
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "config/**"
-      - "src/**"
-      - "scripts/**"
-      - "templates/**"
-      - ".github/workflows/deploy.yml"
   schedule:
     - cron: "17 3 * * *"
   workflow_dispatch:
