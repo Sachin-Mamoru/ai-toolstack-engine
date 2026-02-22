@@ -4,35 +4,49 @@
     <title>AI ToolStack Engine</title>
     <link>https://aidevtools.me/</link>
     <description>Independent comparisons of AI tools for developers and DevOps engineers. No hype — just practical breakdowns to help you choose the right tool.</description>
-    <lastBuildDate>Sun, 22 Feb 2026 21:57:59 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 22 Feb 2026 22:01:08 +0000</lastBuildDate>
     <atom:link href="https://aidevtools.me/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[Best AI Tools for Infrastructure as Code (IaC) in 2026]]></title>
+    <link>https://aidevtools.me/best/best-ai-tools-for-iac/</link>
+    <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-iac/</guid>
+    <description><![CDATA[Generate and review Terraform/Pulumi/Ansible code with AI assistance]]></description>
+    <pubDate>Sun, 22 Feb 2026 22:01:08 +0000</pubDate>
+  </item>
   <item>
     <title><![CDATA[Best AI Tools for DevOps Automation in 2026]]></title>
     <link>https://aidevtools.me/best/best-ai-tools-for-devops-automation/</link>
     <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-devops-automation/</guid>
     <description><![CDATA[Automate CI/CD pipelines and infrastructure tasks with AI]]></description>
-    <pubDate>Sun, 22 Feb 2026 21:57:59 +0000</pubDate>
+    <pubDate>Sun, 22 Feb 2026 22:01:08 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Best AI Tools for Kubernetes Management in 2026]]></title>
     <link>https://aidevtools.me/best/best-ai-tools-for-kubernetes/</link>
     <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-kubernetes/</guid>
     <description><![CDATA[Identify AI tools that simplify Kubernetes operations and reduce toil]]></description>
-    <pubDate>Sun, 22 Feb 2026 21:57:59 +0000</pubDate>
+    <pubDate>Sun, 22 Feb 2026 22:01:08 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Best AI Tools for Debugging Code in 2026]]></title>
     <link>https://aidevtools.me/best/best-ai-tools-for-debugging/</link>
     <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-debugging/</guid>
     <description><![CDATA[Find AI-powered debugging tools that reduce time spent diagnosing errors]]></description>
-    <pubDate>Sun, 22 Feb 2026 21:57:59 +0000</pubDate>
+    <pubDate>Sun, 22 Feb 2026 22:01:08 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Best AI Coding Assistants for Developers in 2026]]></title>
     <link>https://aidevtools.me/best/best-ai-coding-assistants/</link>
     <guid isPermaLink="true">https://aidevtools.me/best/best-ai-coding-assistants/</guid>
     <description><![CDATA[Discover which AI pair-programmers boost developer productivity the most]]></description>
-    <pubDate>Sun, 22 Feb 2026 21:57:59 +0000</pubDate>
+    <pubDate>Sun, 22 Feb 2026 22:01:08 +0000</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[Best AI Code Review Tools in 2026]]></title>
+    <link>https://aidevtools.me/best/best-ai-code-review-tools/</link>
+    <guid isPermaLink="true">https://aidevtools.me/best/best-ai-code-review-tools/</guid>
+    <description><![CDATA[Find the top AI-powered code review tools to catch bugs and security issues automatically]]></description>
+    <pubDate>Sun, 22 Feb 2026 22:01:08 +0000</pubDate>
   </item>
   </channel>
 </rss>
