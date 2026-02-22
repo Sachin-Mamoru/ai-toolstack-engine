@@ -352,7 +352,7 @@ A: (second answer.)
 def _parse_delimited_response(raw: str) -> dict[str, Any]:
     """Parse the structured delimiter-based response from the model.
 
-    Expected format (no JSON, no escaping issues with markdown content)::
+    Expected format::
 
         <<<TITLE>>>
         page title
@@ -364,25 +364,36 @@ def _parse_delimited_response(raw: str) -> dict[str, Any]:
         Q: question?
         A: answer.
         <<<END>>>
+
+    Gracefully handles truncated responses where <<<FAQ>>> or <<<END>>> are
+    missing (e.g. hit max_output_tokens mid-article).
     """
-    DELIMITERS = ["<<<TITLE>>>", "<<<META>>>", "<<<ARTICLE>>>", "<<<FAQ>>>", "<<<END>>>"]
 
-    def _extract(text: str, start_tag: str, end_tag: str) -> str:
+    def _extract(text: str, start_tag: str, *end_tags: str) -> str:
+        """Extract text between start_tag and the first matching end_tag.
+        Falls through to end-of-string if no end_tag is found."""
         start = text.find(start_tag)
-        end = text.find(end_tag, start + len(start_tag))
-        if start == -1 or end == -1:
+        if start == -1:
             return ""
-        return text[start + len(start_tag):end].strip()
+        content_start = start + len(start_tag)
+        for end_tag in end_tags:
+            end = text.find(end_tag, content_start)
+            if end != -1:
+                return text[content_start:end].strip()
+        # No closing tag found — take everything remaining (truncated response)
+        return text[content_start:].strip()
 
-    title = _extract(raw, "<<<TITLE>>>", "<<<META>>>")
-    meta = _extract(raw, "<<<META>>>", "<<<ARTICLE>>>")
-    article = _extract(raw, "<<<ARTICLE>>>", "<<<FAQ>>>")
+    title = _extract(raw, "<<<TITLE>>>", "<<<META>>>", "<<<ARTICLE>>>", "<<<END>>>")
+    meta = _extract(raw, "<<<META>>>", "<<<ARTICLE>>>", "<<<END>>>")
+    # Article: ends at <<<FAQ>>> if present, else <<<END>>>, else end-of-string
+    article = _extract(raw, "<<<ARTICLE>>>", "<<<FAQ>>>", "<<<END>>>")
     faq_raw = _extract(raw, "<<<FAQ>>>", "<<<END>>>")
 
     if not article:
+        present = [d for d in ("<<<TITLE>>>", "<<<META>>>", "<<<ARTICLE>>>", "<<<FAQ>>>", "<<<END>>>") if d in raw]
         raise ValueError(
-            f"Missing <<<ARTICLE>>> section in model response. "
-            f"Got delimiters: {[d for d in DELIMITERS if d in raw]!r}. "
+            f"Missing <<<ARTICLE>>> content in model response. "
+            f"Present delimiters: {present!r}. "
             f"Response start: {raw[:300]!r}"
         )
 
@@ -421,7 +432,7 @@ def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> st
                 contents=prompt,
                 config=genai_types.GenerateContentConfig(
                     temperature=0.4,
-                    max_output_tokens=8192,
+                    max_output_tokens=16384,
                 ),
             )
             if response.text is None:

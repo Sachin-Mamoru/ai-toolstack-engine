@@ -97,3 +97,30 @@ def test_parse_delimited_empty_faq():
     )
     result = _parse_delimited_response(raw)
     assert result["faq"] == []
+
+
+def test_parse_delimited_truncated_no_faq_or_end():
+    """Model response truncated mid-article: <<<FAQ>>> and <<<END>>> absent."""
+    raw = (
+        "<<<TITLE>>>\nTruncated Title\n"
+        "<<<META>>>\nTruncated meta.\n"
+        "<<<ARTICLE>>>\nThis article was cut off mid-sentence, no FAQ tag follows."
+    )
+    result = _parse_delimited_response(raw)
+    assert result["title"] == "Truncated Title"
+    assert "cut off" in result["article_markdown"]
+    assert result["faq"] == []
+
+
+def test_parse_delimited_truncated_no_end_has_faq():
+    """<<<FAQ>>> present but <<<END>>> missing (truncated after FAQ block)."""
+    raw = (
+        "<<<TITLE>>>\nPage Title\n"
+        "<<<META>>>\nMeta desc.\n"
+        "<<<ARTICLE>>>\nFull article body.\n"
+        "<<<FAQ>>>\nQ: A question?\nA: An answer."
+    )
+    result = _parse_delimited_response(raw)
+    assert result["article_markdown"] == "Full article body."
+    assert len(result["faq"]) == 1
+    assert result["faq"][0]["question"] == "A question?"
