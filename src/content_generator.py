@@ -69,9 +69,9 @@ def _resolve_model(client: genai.Client) -> str:
     try:
         for m in client.models.list():
             name: str = getattr(m, "name", "") or ""
-            short = name.removeprefix("models/")
-            # Include all text-generation models; the SDK doesn't reliably
-            # expose supported_generation_methods in every version.
+            # Normalize: strip any path prefix (e.g. "models/" or
+            # "publishers/google/models/"), keep only the bare model ID.
+            short = name.split("/")[-1]
             if short and ("gemini" in short or "flash" in short or "pro" in short):
                 available.add(short)
         logger.info("Live model list fetched (%d models)", len(available))
