@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+.env
+*.env
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Ruff / Black cache
+.ruff_cache/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Site build output — committed by bot, but local builds can be noisy
+# Uncomment if you do NOT want to track site/ locally:
+# site/
+
+# Secrets — never commit
+.env.local
+secrets.yaml

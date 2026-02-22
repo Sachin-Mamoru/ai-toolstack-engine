@@ -1,0 +1,116 @@
+name: Daily Generate & Deploy
+
+on:
+  schedule:
+    # Run at 06:00 UTC every day
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: "Number of pages to generate (overrides PAGES_PER_DAY)"
+        required: false
+        default: "3"
+      dry_run:
+        description: "Dry run (no Gemini calls, no commit)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # ── Checkout ──────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── Python setup ──────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      # ── Lint & format check ───────────────────────────────
+      - name: Run ruff lint
+        run: ruff check src/ scripts/ tests/
+
+      - name: Run black format check
+        run: black --check src/ scripts/ tests/
+
+      # ── Unit tests ────────────────────────────────────────
+      - name: Run unit tests
+        run: pytest tests/ -v --tb=short
+
+      # ── Generate new pages ────────────────────────────────
+      - name: Generate new pages
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PAGES_PER_DAY: ${{ github.event.inputs.pages || '3' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://aidevtools.me' }}
+          SITE_NAME: ${{ vars.SITE_NAME || 'AI ToolStack Engine' }}
+          ADSENSE_PUBLISHER_ID: ${{ secrets.ADSENSE_PUBLISHER_ID || '' }}
+        run: |
+          DRY_FLAG=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            DRY_FLAG="--dry-run"
+          fi
+          python scripts/daily_run.py --pages "$PAGES_PER_DAY" $DRY_FLAG
+
+      # ── Build static site ─────────────────────────────────
+      - name: Build static site
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://aidevtools.me' }}
+          SITE_NAME: ${{ vars.SITE_NAME || 'AI ToolStack Engine' }}
+          ADSENSE_PUBLISHER_ID: ${{ secrets.ADSENSE_PUBLISHER_ID || '' }}
+        run: python scripts/build_site.py
+
+      # ── Commit generated content back to repo ─────────────
+      - name: Commit generated content
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/ site/
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(bot): daily page generation $(date -u +%Y-%m-%d)"
+            git push origin HEAD
+          fi
+
+      # ── Deploy to GitHub Pages ────────────────────────────
+      - name: Setup GitHub Pages
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        if: github.event.inputs.dry_run != 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4

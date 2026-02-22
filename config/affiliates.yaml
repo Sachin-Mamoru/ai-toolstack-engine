@@ -1,0 +1,56 @@
+# Affiliate mappings: tool_name -> affiliate_url
+# Replace placeholder URLs with real affiliate links when you join programs.
+# Until then, direct homepage links are used so the site remains functional.
+
+affiliates:
+  GitHub Copilot: https://github.com/features/copilot
+  Cursor: https://cursor.sh
+  Tabnine: https://www.tabnine.com
+  Codeium: https://codeium.com
+  Amazon CodeWhisperer: https://aws.amazon.com/codewhisperer
+  Sourcegraph Cody: https://sourcegraph.com/cody
+  Continue.dev: https://continue.dev
+  Aider: https://aider.chat
+  JetBrains AI Assistant: https://www.jetbrains.com/ai
+  CodeRabbit: https://coderabbit.ai
+  CodeClimate: https://codeclimate.com
+  SonarQube: https://www.sonarsource.com/products/sonarqube
+  Snyk: https://snyk.io
+  Semgrep: https://semgrep.dev
+  Checkov: https://www.checkov.io
+  Terrascan: https://runterrascan.io
+  Datadog: https://www.datadoghq.com
+  New Relic: https://newrelic.com
+  Dynatrace: https://www.dynatrace.com
+  Grafana: https://grafana.com
+  "Elastic (ELK Stack)": https://www.elastic.co
+  Splunk: https://www.splunk.com
+  PagerDuty: https://www.pagerduty.com
+  OpsGenie: https://www.atlassian.com/software/opsgenie
+  Sentry: https://sentry.io
+  Terraform: https://www.terraform.io
+  Pulumi: https://www.pulumi.com
+  Ansible: https://www.ansible.com
+  AWS CodeGuru: https://aws.amazon.com/codeguru
+  Devin: https://devin.ai
+  Warp: https://www.warp.dev
+  Linear: https://linear.app
+  Vercel AI SDK: https://sdk.vercel.ai
+  LangChain: https://www.langchain.com
+  Sweep AI: https://sweep.dev
+  Codacy: https://www.codacy.com
+  DeepSource: https://deepsource.com
+  Kubecost: https://www.kubecost.com
+  Infracost: https://www.infracost.io
+  k9s: https://k9scli.io
+  Lens: https://k8slens.dev
+  Karpenter: https://karpenter.sh
+  Harness: https://www.harness.io
+  Spacelift: https://spacelift.io
+  Trunk: https://trunk.io
+  Pieces for Developers: https://pieces.app
+  Mintlify: https://mintlify.com
+  Stenography: https://stenography.dev
+  Diffblue Cover: https://www.diffblue.com
+  Codegen: https://www.codegen.com
+  "Qodo (formerly CodiumAI)": https://www.qodo.ai

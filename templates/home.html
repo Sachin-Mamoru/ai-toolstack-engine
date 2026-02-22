@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}}</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <link rel="canonical" href="{{PAGE_URL}}">
+  <link rel="stylesheet" href="{{SITE_URL}}/static/style.css">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{PAGE_TITLE}}">
+  <meta property="og:description" content="{{META_DESCRIPTION}}">
+  <meta property="og:url" content="{{PAGE_URL}}">
+  <meta name="twitter:card" content="summary">
+  <link rel="alternate" type="application/rss+xml" title="{{SITE_NAME}}" href="{{SITE_URL}}/rss.xml">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{SITE_NAME}}",
+    "url": "{{PAGE_URL}}"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-logo" href="{{SITE_URL}}/">{{SITE_NAME}}</a>
+      <nav>
+        <a href="{{SITE_URL}}/best/">Best Lists</a>
+        <a href="{{SITE_URL}}/vs/">Comparisons</a>
+        <a href="{{SITE_URL}}/categories/">Categories</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>AI Tools for Developers &amp; DevOps</h1>
+      <p>Independent, practical comparisons of AI coding assistants, observability tools, security scanners, and infrastructure automation — by engineers, for engineers.</p>
+      <div class="hero-links">
+        <a class="btn btn-primary" href="{{SITE_URL}}/best/">Browse Best Lists</a>
+        <a class="btn btn-secondary" href="{{SITE_URL}}/vs/">Tool Comparisons</a>
+      </div>
+      <p class="hero-stat">{{TOTAL_PAGES}} published comparisons and counting.</p>
+    </div>
+  </section>
+
+  <main class="container">
+    {{ADSENSE_BLOCK}}
+
+    <section>
+      <h2>Recently Published</h2>
+      <div class="card-grid">
+        {{RECENT_CARDS}}
+      </div>
+      <p style="text-align:center; margin-top:2rem;">
+        <a href="{{SITE_URL}}/best/" class="btn">All Best Lists →</a>
+        &nbsp;
+        <a href="{{SITE_URL}}/vs/" class="btn">All Comparisons →</a>
+      </p>
+    </section>
+
+    <section class="value-props">
+      <h2>Why Use This Site?</h2>
+      <div class="vp-grid">
+        <div class="vp-item">
+          <h3>No hype</h3>
+          <p>Written from an engineering perspective. We skip marketing language and focus on practical trade-offs.</p>
+        </div>
+        <div class="vp-item">
+          <h3>Regularly updated</h3>
+          <p>The AI tooling landscape changes fast. We publish new comparisons every week.</p>
+        </div>
+        <div class="vp-item">
+          <h3>Free-tier focused</h3>
+          <p>We always highlight which tools have usable free tiers so you can try before committing.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <a href="{{SITE_URL}}/">Home</a> &bull;
+        <a href="{{SITE_URL}}/best/">Best Lists</a> &bull;
+        <a href="{{SITE_URL}}/vs/">Comparisons</a> &bull;
+        <a href="{{SITE_URL}}/categories/">Categories</a> &bull;
+        <a href="{{SITE_URL}}/privacy/">Privacy Policy</a> &bull;
+        <a href="{{SITE_URL}}/about/">About</a> &bull;
+        <a href="{{SITE_URL}}/contact/">Contact</a>
+      </p>
+      <p><small>&copy; 2026 {{SITE_NAME}}. Independent analysis — not sponsored by any vendor.</small></p>
+    </div>
+  </footer>
+</body>
+</html>

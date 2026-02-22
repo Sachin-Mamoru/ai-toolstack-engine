@@ -1,0 +1,561 @@
+tools:
+  - name: GitHub Copilot
+    category: coding_assistant
+    homepage_url: https://github.com/features/copilot
+    pricing_url: https://github.com/features/copilot#pricing
+    features:
+      - Inline code completion in VS Code, JetBrains, Neovim
+      - Copilot Chat for conversational coding help
+      - PR summaries and code explanations
+      - CLI assistant (Copilot in the terminal)
+    pricing_summary: "Free tier for open-source / students; paid plans for individuals and teams"
+
+  - name: Cursor
+    category: coding_assistant
+    homepage_url: https://cursor.sh
+    pricing_url: https://cursor.sh/pricing
+    features:
+      - Fork of VS Code with deep AI integration
+      - Multi-file edit (Composer mode)
+      - Codebase-wide context with @codebase
+      - Privacy mode to avoid sending code to servers
+    pricing_summary: "Free tier available; pro and team paid plans"
+
+  - name: Tabnine
+    category: coding_assistant
+    homepage_url: https://www.tabnine.com
+    pricing_url: https://www.tabnine.com/pricing
+    features:
+      - Privacy-first on-premise deployment option
+      - Supports 30+ languages
+      - Team learning from private codebases
+      - IDE plugins for VS Code, JetBrains, Eclipse
+    pricing_summary: "Free basic tier; paid plans for advanced and team use"
+
+  - name: Codeium
+    category: coding_assistant
+    homepage_url: https://codeium.com
+    pricing_url: https://codeium.com/pricing
+    features:
+      - Free for individual developers
+      - Supports 70+ languages and 40+ IDEs
+      - Context-aware completions
+      - Chat and search features
+    pricing_summary: "Free for individuals; enterprise plans available"
+
+  - name: Amazon CodeWhisperer
+    category: coding_assistant
+    homepage_url: https://aws.amazon.com/codewhisperer
+    pricing_url: https://aws.amazon.com/codewhisperer/pricing
+    features:
+      - Deep AWS SDK integration
+      - Security vulnerability scanning
+      - Reference tracking for open-source suggestions
+      - Supports Python, Java, JS, TS, Go, C#, and more
+    pricing_summary: "Free tier for individual use; professional tier for teams"
+
+  - name: Sourcegraph Cody
+    category: coding_assistant
+    homepage_url: https://sourcegraph.com/cody
+    pricing_url: https://sourcegraph.com/pricing
+    features:
+      - Codebase-aware context from Sourcegraph search
+      - Supports multiple LLM backends (Claude, GPT-4)
+      - VS Code and JetBrains plugins
+      - Batch changes and code intelligence
+    pricing_summary: "Free tier; paid plans for teams and enterprise"
+
+  - name: Continue.dev
+    category: coding_assistant
+    homepage_url: https://continue.dev
+    pricing_url: https://continue.dev
+    features:
+      - Open-source, locally run or cloud-connected
+      - Works with any LLM (Ollama, OpenAI, Anthropic)
+      - VS Code and JetBrains support
+      - Full control over context and prompts
+    pricing_summary: "Free and open-source; bring your own API keys"
+
+  - name: Aider
+    category: coding_assistant
+    homepage_url: https://aider.chat
+    pricing_url: https://aider.chat
+    features:
+      - CLI-first AI coding tool
+      - Git-aware: makes commits with AI-written changes
+      - Supports GPT-4, Claude, Gemini backends
+      - Works on entire repos or targeted files
+    pricing_summary: "Free and open-source; pay for your own LLM API usage"
+
+  - name: JetBrains AI Assistant
+    category: coding_assistant
+    homepage_url: https://www.jetbrains.com/ai
+    pricing_url: https://www.jetbrains.com/ai/#pricing
+    features:
+      - Built into all JetBrains IDEs
+      - Context-aware from project structure
+      - Commit message generation
+      - Code explanation and refactoring
+    pricing_summary: "Paid add-on; free tier / trial available"
+
+  - name: CodeRabbit
+    category: code_review
+    homepage_url: https://coderabbit.ai
+    pricing_url: https://coderabbit.ai/pricing
+    features:
+      - AI-powered PR review summaries
+      - Line-by-line code suggestions
+      - Security and performance insights
+      - GitHub and GitLab integration
+    pricing_summary: "Free for open-source; paid plans for private repos"
+
+  - name: CodeClimate
+    category: code_review
+    homepage_url: https://codeclimate.com
+    pricing_url: https://codeclimate.com/pricing
+    features:
+      - Automated code quality scoring
+      - Test coverage reporting
+      - Technical debt tracking
+      - GitHub integration
+    pricing_summary: "Free for open-source; paid plans for teams"
+
+  - name: SonarQube
+    category: code_review
+    homepage_url: https://www.sonarsource.com/products/sonarqube
+    pricing_url: https://www.sonarsource.com/plans-and-pricing
+    features:
+      - Static analysis for 30+ languages
+      - Security hotspot detection
+      - CI/CD pipeline integration
+      - Technical debt tracking
+    pricing_summary: "Community edition free; paid Developer and Enterprise editions"
+
+  - name: Snyk
+    category: security_scanning
+    homepage_url: https://snyk.io
+    pricing_url: https://snyk.io/plans
+    features:
+      - Dependency vulnerability scanning
+      - Snyk Code for SAST
+      - Container and IaC scanning
+      - IDE and CI/CD integrations
+    pricing_summary: "Free tier for individuals; paid team and business plans"
+
+  - name: Semgrep
+    category: security_scanning
+    homepage_url: https://semgrep.dev
+    pricing_url: https://semgrep.dev/pricing
+    features:
+      - Fast open-source static analysis
+      - Custom rule authoring
+      - 2000+ out-of-the-box rules
+      - CI/CD and PR integration
+    pricing_summary: "Open-source core free; Semgrep Cloud paid tiers"
+
+  - name: Checkov
+    category: security_scanning
+    homepage_url: https://www.checkov.io
+    pricing_url: https://www.checkov.io
+    features:
+      - IaC security scanning for Terraform, Helm, CloudFormation
+      - 1000+ built-in policies
+      - CLI and CI/CD integration
+      - Open-source
+    pricing_summary: "Free and open-source"
+
+  - name: Terrascan
+    category: security_scanning
+    homepage_url: https://runterrascan.io
+    pricing_url: https://runterrascan.io
+    features:
+      - IaC scanning for Terraform, Kubernetes, Helm, Dockerfile
+      - Policy-as-code with OPA/Rego
+      - CI/CD integration
+      - Open-source
+    pricing_summary: "Free and open-source"
+
+  - name: Datadog
+    category: observability
+    homepage_url: https://www.datadoghq.com
+    pricing_url: https://www.datadoghq.com/pricing
+    features:
+      - Full-stack observability: APM, logs, metrics, traces
+      - Watchdog AI anomaly detection
+      - LLM Observability add-on
+      - Incident management
+    pricing_summary: "Free trial; usage-based paid plans"
+
+  - name: New Relic
+    category: observability
+    homepage_url: https://newrelic.com
+    pricing_url: https://newrelic.com/pricing
+    features:
+      - Full-stack observability platform
+      - Applied Intelligence for AIOps
+      - Free 100GB/month ingest
+      - APM, logs, browser, mobile
+    pricing_summary: "Free tier (100GB/month); paid tiers beyond free limits"
+
+  - name: Dynatrace
+    category: observability
+    homepage_url: https://www.dynatrace.com
+    pricing_url: https://www.dynatrace.com/pricing
+    features:
+      - Davis AI engine for automated root-cause analysis
+      - Full-stack auto-instrumentation
+      - Business analytics integration
+      - AIOps and automation
+    pricing_summary: "Free trial; paid plans based on consumption"
+
+  - name: Grafana
+    category: observability
+    homepage_url: https://grafana.com
+    pricing_url: https://grafana.com/pricing
+    features:
+      - Open-source dashboards and visualization
+      - Grafana Cloud with managed Loki, Mimir, Tempo
+      - Machine learning add-on for anomaly detection
+      - 150+ data source integrations
+    pricing_summary: "Open-source free; Grafana Cloud free tier with paid upgrades"
+
+  - name: Elastic (ELK Stack)
+    category: observability
+    homepage_url: https://www.elastic.co
+    pricing_url: https://www.elastic.co/pricing
+    features:
+      - Elasticsearch, Logstash, Kibana
+      - AI-powered attack discovery for security
+      - Vector search for AI applications
+      - Cloud and self-hosted options
+    pricing_summary: "Open-source core free; Elastic Cloud has free trial with paid plans"
+
+  - name: Splunk
+    category: observability
+    homepage_url: https://www.splunk.com
+    pricing_url: https://www.splunk.com/en_us/products/pricing.html
+    features:
+      - Enterprise log management and SIEM
+      - Splunk AI for anomaly detection
+      - Unified Security and Observability platform
+      - Extensive app ecosystem
+    pricing_summary: "Paid platform; free trial available"
+
+  - name: PagerDuty
+    category: incident_management
+    homepage_url: https://www.pagerduty.com
+    pricing_url: https://www.pagerduty.com/pricing
+    features:
+      - AI-powered incident triage and correlation
+      - On-call scheduling and escalations
+      - Automated runbooks
+      - Integrates with 700+ tools
+    pricing_summary: "Free trial; paid plans per user per month"
+
+  - name: OpsGenie
+    category: incident_management
+    homepage_url: https://www.atlassian.com/software/opsgenie
+    pricing_url: https://www.atlassian.com/software/opsgenie/pricing
+    features:
+      - Alert management and on-call scheduling
+      - Intelligent alert routing
+      - Collaboration during incidents
+      - Integrates with Jira and Confluence
+    pricing_summary: "Free tier for up to 5 users; paid plans for larger teams"
+
+  - name: Sentry
+    category: observability
+    homepage_url: https://sentry.io
+    pricing_url: https://sentry.io/pricing
+    features:
+      - Error tracking and performance monitoring
+      - AI-assisted issue resolution (Sentry AI)
+      - Session replays
+      - Support for 100+ platforms and frameworks
+    pricing_summary: "Free tier for small projects; paid plans for larger usage"
+
+  - name: Terraform
+    category: iac
+    homepage_url: https://www.terraform.io
+    pricing_url: https://www.hashicorp.com/products/terraform/pricing
+    features:
+      - Declarative infrastructure provisioning
+      - 3000+ providers
+      - HCP Terraform for collaboration
+      - Drift detection
+    pricing_summary: "Open-source CLI free; HCP Terraform has free and paid tiers"
+
+  - name: Pulumi
+    category: iac
+    homepage_url: https://www.pulumi.com
+    pricing_url: https://www.pulumi.com/pricing
+    features:
+      - IaC using Python, TypeScript, Go, C#
+      - Pulumi AI for natural language to IaC
+      - Crosswalk for AWS/GCP/Azure
+      - Secret management
+    pricing_summary: "Open-source free; Pulumi Cloud has free and paid tiers"
+
+  - name: Ansible
+    category: iac
+    homepage_url: https://www.ansible.com
+    pricing_url: https://www.redhat.com/en/technologies/management/ansible/pricing
+    features:
+      - Agentless configuration management
+      - 3000+ modules
+      - Ansible Lightspeed AI assistant
+      - Playbook automation
+    pricing_summary: "Open-source free; Red Hat Ansible Automation Platform paid"
+
+  - name: AWS CodeGuru
+    category: code_review
+    homepage_url: https://aws.amazon.com/codeguru
+    pricing_url: https://aws.amazon.com/codeguru/pricing
+    features:
+      - ML-powered code review recommendations
+      - Security detector for 10+ vulnerability types
+      - Performance profiling
+      - Deep AWS SDK knowledge
+    pricing_summary: "Paid per lines of code reviewed; free trial available"
+
+  - name: Devin
+    category: coding_assistant
+    homepage_url: https://devin.ai
+    pricing_url: https://devin.ai/pricing
+    features:
+      - Autonomous AI software engineer
+      - End-to-end task execution in sandboxed environment
+      - Web browsing and shell access
+      - GitHub PR creation
+    pricing_summary: "Paid plans; pricing based on usage"
+
+  - name: Warp
+    category: dev_productivity
+    homepage_url: https://www.warp.dev
+    pricing_url: https://www.warp.dev/pricing
+    features:
+      - AI-powered terminal with natural language commands
+      - Warp AI for error explanation
+      - Command search and history
+      - Collaborative notebooks in terminal
+    pricing_summary: "Free for individuals; paid team plans"
+
+  - name: Linear
+    category: dev_productivity
+    homepage_url: https://linear.app
+    pricing_url: https://linear.app/pricing
+    features:
+      - Fast issue tracking for engineering teams
+      - AI-powered issue writing and prioritization
+      - Roadmap and cycle management
+      - GitHub/GitLab integration
+    pricing_summary: "Free tier; paid plans for teams"
+
+  - name: Vercel AI SDK
+    category: dev_productivity
+    homepage_url: https://sdk.vercel.ai
+    pricing_url: https://vercel.com/pricing
+    features:
+      - TypeScript toolkit for building AI-powered UIs
+      - Streaming text and chat support
+      - Unified API for multiple LLM providers
+      - React Server Components integration
+    pricing_summary: "SDK is open-source free; hosting on Vercel has free and paid tiers"
+
+  - name: LangChain
+    category: dev_productivity
+    homepage_url: https://www.langchain.com
+    pricing_url: https://www.langchain.com/pricing
+    features:
+      - Framework for LLM application development
+      - LangGraph for agent workflows
+      - LangSmith for observability and testing
+      - 100+ integrations
+    pricing_summary: "Open-source free; LangSmith has free tier and paid plans"
+
+  - name: Sweep AI
+    category: code_review
+    homepage_url: https://sweep.dev
+    pricing_url: https://sweep.dev/pricing
+    features:
+      - AI junior developer that tackles GitHub issues
+      - Writes PRs from issue descriptions
+      - Runs tests and fixes CI failures
+      - Context-aware codebase understanding
+    pricing_summary: "Free for open-source; paid plans for private repos"
+
+  - name: Codacy
+    category: code_review
+    homepage_url: https://www.codacy.com
+    pricing_url: https://www.codacy.com/pricing
+    features:
+      - Automated code quality and security
+      - Coverage reports
+      - 40+ languages and frameworks
+      - GitHub/GitLab/Bitbucket integration
+    pricing_summary: "Free for open-source; paid plans for teams"
+
+  - name: DeepSource
+    category: code_review
+    homepage_url: https://deepsource.com
+    pricing_url: https://deepsource.com/pricing
+    features:
+      - Continuous static analysis
+      - Auto-fix pull requests
+      - Metrics and test coverage
+      - 15+ analysis engines
+    pricing_summary: "Free for open-source; paid for teams"
+
+  - name: Kubecost
+    category: cloud_cost
+    homepage_url: https://www.kubecost.com
+    pricing_url: https://www.kubecost.com/pricing
+    features:
+      - Kubernetes cost monitoring and allocation
+      - Cost savings recommendations
+      - Multi-cluster support
+      - OpenCost open-source project
+    pricing_summary: "Free community edition; paid Kubecost Enterprise"
+
+  - name: Infracost
+    category: cloud_cost
+    homepage_url: https://www.infracost.io
+    pricing_url: https://www.infracost.io/pricing
+    features:
+      - Cloud cost estimates for Terraform changes in PR
+      - Supports AWS, GCP, Azure
+      - CI/CD integration
+      - Open-source core
+    pricing_summary: "Open-source free; paid cloud plans for teams"
+
+  - name: k9s
+    category: kubernetes
+    homepage_url: https://k9scli.io
+    pricing_url: https://k9scli.io
+    features:
+      - Terminal-based Kubernetes UI
+      - Real-time resource monitoring
+      - Plugins and skin customization
+      - Free and open-source
+    pricing_summary: "Free and open-source"
+
+  - name: Lens
+    category: kubernetes
+    homepage_url: https://k8slens.dev
+    pricing_url: https://k8slens.dev/pricing
+    features:
+      - Desktop Kubernetes IDE
+      - Multi-cluster management
+      - Extensions marketplace
+      - AI Assistant for troubleshooting
+    pricing_summary: "Free personal edition; paid pro and team plans"
+
+  - name: Karpenter
+    category: kubernetes
+    homepage_url: https://karpenter.sh
+    pricing_url: https://karpenter.sh
+    features:
+      - Open-source Kubernetes node autoprovisioner
+      - Fast node provisioning (seconds vs minutes)
+      - Spot instance optimization
+      - AWS-native integration
+    pricing_summary: "Free and open-source"
+
+  - name: Harness
+    category: cicd
+    homepage_url: https://www.harness.io
+    pricing_url: https://www.harness.io/pricing
+    features:
+      - AI-powered CI/CD platform
+      - Feature flags and chaos engineering
+      - Cost management for cloud
+      - GitOps with Argo CD
+    pricing_summary: "Free tier; paid plans for advanced features"
+
+  - name: Spacelift
+    category: iac
+    homepage_url: https://spacelift.io
+    pricing_url: https://spacelift.io/pricing
+    features:
+      - CI/CD for infrastructure-as-code
+      - Supports Terraform, OpenTofu, Pulumi, Ansible
+      - Policy-as-code with OPA
+      - Drift detection
+    pricing_summary: "Free trial; paid plans for teams"
+
+  - name: Trunk
+    category: dev_productivity
+    homepage_url: https://trunk.io
+    pricing_url: https://trunk.io/pricing
+    features:
+      - Universal code quality / linting platform
+      - Merge queue for CI reliability
+      - Check (runs all linters in one command)
+      - AI-powered fix suggestions
+    pricing_summary: "Free for open-source; paid plans for teams"
+
+  - name: Pieces for Developers
+    category: dev_productivity
+    homepage_url: https://pieces.app
+    pricing_url: https://pieces.app/pricing
+    features:
+      - AI-powered developer snippet manager
+      - On-device LLM for privacy
+      - Browser and IDE integrations
+      - Context-aware code recall
+    pricing_summary: "Free for individuals; Pieces for Teams paid"
+
+  - name: Mintlify
+    category: dev_productivity
+    homepage_url: https://mintlify.com
+    pricing_url: https://mintlify.com/pricing
+    features:
+      - AI-powered documentation writing
+      - Doc site hosting
+      - VS Code extension for inline doc generation
+      - User analytics on docs
+    pricing_summary: "Free tier; paid plans for teams and custom domains"
+
+  - name: Stenography
+    category: dev_productivity
+    homepage_url: https://stenography.dev
+    pricing_url: https://stenography.dev
+    features:
+      - Auto-generates docstrings and comments
+      - VS Code extension
+      - Batch code documentation
+      - Supports multiple languages
+    pricing_summary: "Free tier; paid plans for higher usage"
+
+  - name: Diffblue Cover
+    category: code_review
+    homepage_url: https://www.diffblue.com
+    pricing_url: https://www.diffblue.com/pricing
+    features:
+      - Autonomous Java unit test generation
+      - CI/CD integration
+      - Regression test suite maintenance
+      - Coverage improvement without manual effort
+    pricing_summary: "Free community edition; paid enterprise version"
+
+  - name: Codegen
+    category: coding_assistant
+    homepage_url: https://www.codegen.com
+    pricing_url: https://www.codegen.com/pricing
+    features:
+      - AI coding agent for GitHub workflows
+      - PR descriptions and automated review
+      - Codebase understanding via graph analysis
+      - Slack and GitHub integration
+    pricing_summary: "Paid plans; free trial available"
+
+  - name: Qodo (formerly CodiumAI)
+    category: code_review
+    homepage_url: https://www.qodo.ai
+    pricing_url: https://www.qodo.ai/pricing
+    features:
+      - AI-generated tests and test coverage analysis
+      - PR-Agent for automated code review
+      - Code integrity analysis
+      - VS Code and JetBrains plugins
+    pricing_summary: "Free tier; paid plans for teams"

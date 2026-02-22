@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} | {{SITE_NAME}}</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <link rel="canonical" href="{{PAGE_URL}}">
+  <link rel="stylesheet" href="{{SITE_URL}}/static/style.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{PAGE_TITLE}}">
+  <meta property="og:description" content="{{META_DESCRIPTION}}">
+  <meta property="og:url" content="{{PAGE_URL}}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{PAGE_TITLE}}">
+  <meta name="twitter:description" content="{{META_DESCRIPTION}}">
+  <link rel="alternate" type="application/rss+xml" title="{{SITE_NAME}}" href="{{SITE_URL}}/rss.xml">
+  <!-- Article Schema -->
+  <script type="application/ld+json">
+  {{ARTICLE_SCHEMA}}
+  </script>
+  {{FAQ_SCHEMA_SCRIPT}}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-logo" href="{{SITE_URL}}/">{{SITE_NAME}}</a>
+      <nav>
+        <a href="{{SITE_URL}}/best/">Best Lists</a>
+        <a href="{{SITE_URL}}/vs/">Comparisons</a>
+        <a href="{{SITE_URL}}/categories/">Categories</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-content">
+    <!-- AdSense top banner -->
+    {{ADSENSE_BLOCK}}
+
+    <article>
+      {{ARTICLE_HTML}}
+    </article>
+
+    <!-- AdSense mid banner -->
+    {{ADSENSE_BLOCK}}
+  </main>
+
+  <aside class="container sidebar-note">
+    <p><strong>Last Updated:</strong> {{LAST_UPDATED}} &mdash; We review and update these comparisons regularly.</p>
+    <p><small>Some links on this page may be affiliate links. We never let affiliate relationships affect our editorial judgement.</small></p>
+  </aside>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <a href="{{SITE_URL}}/">Home</a> &bull;
+        <a href="{{SITE_URL}}/best/">Best Lists</a> &bull;
+        <a href="{{SITE_URL}}/vs/">Comparisons</a> &bull;
+        <a href="{{SITE_URL}}/categories/">Categories</a> &bull;
+        <a href="{{SITE_URL}}/privacy/">Privacy Policy</a> &bull;
+        <a href="{{SITE_URL}}/about/">About</a> &bull;
+        <a href="{{SITE_URL}}/contact/">Contact</a>
+      </p>
+      <p><small>&copy; 2026 {{SITE_NAME}}. Independent analysis — not sponsored by any vendor.</small></p>
+    </div>
+  </footer>
+</body>
+</html>

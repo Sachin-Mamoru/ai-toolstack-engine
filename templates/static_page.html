@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} | {{SITE_NAME}}</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <link rel="canonical" href="{{PAGE_URL}}">
+  <link rel="stylesheet" href="{{SITE_URL}}/static/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-logo" href="{{SITE_URL}}/">{{SITE_NAME}}</a>
+      <nav>
+        <a href="{{SITE_URL}}/best/">Best Lists</a>
+        <a href="{{SITE_URL}}/vs/">Comparisons</a>
+        <a href="{{SITE_URL}}/categories/">Categories</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-content">
+    <article>
+      {{CONTENT_HTML}}
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <a href="{{SITE_URL}}/">Home</a> &bull;
+        <a href="{{SITE_URL}}/best/">Best Lists</a> &bull;
+        <a href="{{SITE_URL}}/vs/">Comparisons</a> &bull;
+        <a href="{{SITE_URL}}/categories/">Categories</a> &bull;
+        <a href="{{SITE_URL}}/privacy/">Privacy Policy</a> &bull;
+        <a href="{{SITE_URL}}/about/">About</a> &bull;
+        <a href="{{SITE_URL}}/contact/">Contact</a>
+      </p>
+      <p><small>&copy; 2026 {{SITE_NAME}}. Independent analysis.</small></p>
+    </div>
+  </footer>
+</body>
+</html>
