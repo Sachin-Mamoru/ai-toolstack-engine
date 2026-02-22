@@ -332,15 +332,55 @@ Return ONLY a valid JSON object with these exact fields — no markdown fences, 
 ).strip()
 
 
+def _repair_json(text: str) -> str:
+    """Fix common JSON issues produced by LLMs: literal newlines/CRs inside strings."""
+    result: list[str] = []
+    in_string = False
+    escape_next = False
+    for ch in text:
+        if escape_next:
+            result.append(ch)
+            escape_next = False
+            continue
+        if ch == "\\":
+            result.append(ch)
+            escape_next = True
+            continue
+        if ch == '"':
+            in_string = not in_string
+            result.append(ch)
+            continue
+        if in_string:
+            if ch == "\n":
+                result.append("\\n")
+                continue
+            if ch == "\r":
+                result.append("\\r")
+                continue
+        result.append(ch)
+    return "".join(result)
+
+
 def _parse_json_response(raw: str) -> dict[str, Any]:
-    """Extract and parse JSON from model response, stripping accidental fences."""
+    """Extract and parse JSON from model response, stripping accidental fences.
+
+    Falls back to _repair_json() when the raw response contains literal
+    newlines or CRs inside JSON string values (a common LLM quirk).
+    """
     text = raw.strip()
     # Strip ```json ... ``` fences if present
     if text.startswith("```"):
         text = re.sub(r"^```[a-z]*\n?", "", text, flags=re.IGNORECASE)
         text = re.sub(r"\n?```$", "", text)
         text = text.strip()
-    return json.loads(text)
+    # First attempt: strict parse
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    # Second attempt: repair literal newlines/CRs inside strings then parse
+    repaired = _repair_json(text)
+    return json.loads(repaired)
 
 
 def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> str:
@@ -356,7 +396,6 @@ def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> st
                 config=genai_types.GenerateContentConfig(
                     temperature=0.4,
                     max_output_tokens=8192,
-                    response_mime_type="application/json",
                 ),
             )
             return response.text
