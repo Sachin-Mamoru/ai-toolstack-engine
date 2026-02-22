@@ -18,16 +18,106 @@ from .utils import truncate, utc_today, word_count
 
 logger = logging.getLogger(__name__)
 
-_MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.0-flash-lite")
+# Ranked preference list – _resolve_model() picks the first one the key can reach.
+GEMINI_MODEL_PREFERENCE = [
+    "gemini-2.0-flash-lite",
+    "gemini-2.0-flash-lite-001",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-001",
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-preview-04-17",
+    "gemini-2.5-pro",
+    "gemini-2.5-pro-preview-03-25",
+    "gemini-1.5-pro-002",
+    "gemini-1.5-pro-001",
+    "gemini-1.5-pro",
+    "gemini-1.5-flash-002",
+    "gemini-1.5-flash-001",
+    "gemini-1.5-flash",
+    "gemini-1.0-pro",
+]
+
 _MAX_RETRIES = 3
 _RETRY_DELAY = 5  # seconds
 
+# Module-level cache so model resolution only happens once per run
+_cached_client: genai.Client | None = None
+_cached_model: str | None = None
 
-def _init_gemini() -> genai.Client:
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        raise OSError("GEMINI_API_KEY environment variable is not set.")
-    return genai.Client(api_key=api_key)
+
+def _is_permanent(exc: BaseException) -> bool:
+    """Return True for errors that will never succeed on retry (4xx non-429)."""
+    msg = str(exc)
+    return any(code in msg for code in ("404", "400", "403", "NOT_FOUND", "INVALID_ARGUMENT"))
+
+
+def _resolve_model(client: genai.Client) -> str:
+    """Return the best available generateContent model for this API key.
+
+    1. Call client.models.list() to get the live set of models.
+    2. Keep only those that support generateContent.
+    3. Rank against GEMINI_MODEL_PREFERENCE; pick the highest-ranked.
+    4. If list() fails, probe each preference entry directly.
+    """
+    # Allow hard override via env var
+    env_model = os.getenv("GEMINI_MODEL")
+    if env_model:
+        logger.info("Model overridden via GEMINI_MODEL env var: %s", env_model)
+        return env_model
+
+    available: set[str] = set()
+    try:
+        for m in client.models.list():
+            name: str = getattr(m, "name", "") or ""
+            short = name.removeprefix("models/")
+            supported = getattr(m, "supported_generation_methods", []) or []
+            if "generateContent" in supported:
+                available.add(short)
+        logger.info("Live model list fetched (%d models)", len(available))
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ListModels failed, will probe directly: %s", str(exc)[:120])
+
+    if available:
+        for preferred in GEMINI_MODEL_PREFERENCE:
+            if preferred in available:
+                logger.info("Model resolved via ListModels: %s", preferred)
+                return preferred
+        # Heuristic fallback: any flash/pro model
+        for name in sorted(available, reverse=True):
+            if "flash" in name or "pro" in name:
+                logger.info("Model resolved (heuristic): %s", name)
+                return name
+        fallback = sorted(available)[0]
+        logger.info("Model resolved (first available): %s", fallback)
+        return fallback
+
+    # ListModels unavailable – probe each preference entry
+    logger.warning("Probing model preference list directly")
+    probe = "Reply with one word: OK"
+    for model in GEMINI_MODEL_PREFERENCE:
+        try:
+            client.models.generate_content(model=model, contents=probe)
+            logger.info("Model resolved via probe: %s", model)
+            return model
+        except Exception as exc:  # noqa: BLE001
+            logger.debug("Model probe failed %s: %s", model, str(exc)[:80])
+
+    last = GEMINI_MODEL_PREFERENCE[0]
+    logger.error("All resolution strategies failed, using: %s", last)
+    return last
+
+
+def _init_gemini() -> tuple[genai.Client, str]:
+    """Return a (client, model_name) pair, resolving the model dynamically."""
+    global _cached_client, _cached_model  # noqa: PLW0603
+    if _cached_client is None:
+        api_key = os.environ.get("GEMINI_API_KEY")
+        if not api_key:
+            raise OSError("GEMINI_API_KEY environment variable is not set.")
+        _cached_client = genai.Client(api_key=api_key)
+        _cached_model = _resolve_model(_cached_client)
+        logger.info("Gemini ready, model=%s", _cached_model)
+    return _cached_client, _cached_model  # type: ignore[return-value]
 
 
 def _build_tools_context(page: dict, tools: list[dict]) -> str:
@@ -252,12 +342,15 @@ def _parse_json_response(raw: str) -> dict[str, Any]:
     return json.loads(text)
 
 
-def _call_gemini_with_retry(client: genai.Client, prompt: str) -> str:
-    """Call Gemini API with exponential back-off retry."""
+def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> str:
+    """Call Gemini API with exponential back-off retry.
+
+    Permanent errors (404, 400, 403) are raised immediately without retrying.
+    """
     for attempt in range(1, _MAX_RETRIES + 1):
         try:
             response = client.models.generate_content(
-                model=_MODEL_NAME,
+                model=model,
                 contents=prompt,
                 config=genai_types.GenerateContentConfig(
                     temperature=0.4,
@@ -266,22 +359,14 @@ def _call_gemini_with_retry(client: genai.Client, prompt: str) -> str:
             )
             return response.text
         except Exception as exc:
+            if _is_permanent(exc):
+                logger.error("Permanent API error (not retrying): %s", exc)
+                raise
             logger.warning("Gemini call attempt %d failed: %s", attempt, exc)
             if attempt < _MAX_RETRIES:
                 time.sleep(_RETRY_DELAY * attempt)
             else:
                 raise
-
-
-def _parse_json_response(raw: str) -> dict[str, Any]:
-    """Extract and parse JSON from model response, stripping accidental fences."""
-    text = raw.strip()
-    # Strip ```json ... ``` fences if present
-    if text.startswith("```"):
-        text = re.sub(r"^```[a-z]*\n?", "", text, flags=re.IGNORECASE)
-        text = re.sub(r"\n?```$", "", text)
-        text = text.strip()
-    return json.loads(text)
 
 
 def generate_page_content(
@@ -304,7 +389,7 @@ def generate_page_content(
     if tools is None:
         tools = load_tools()
 
-    client = _init_gemini()
+    client, model = _init_gemini()
     tools_context = _build_tools_context(page, tools)
     internal_links = _build_internal_links(page, all_pages)
     today = utc_today()
@@ -321,7 +406,7 @@ def generate_page_content(
     )
 
     logger.info("Generating content for: %s", page["slug"])
-    raw = _call_gemini_with_retry(client, prompt)
+    raw = _call_gemini_with_retry(client, model, prompt)
 
     try:
         result = _parse_json_response(raw)
