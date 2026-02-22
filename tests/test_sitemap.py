@@ -1,11 +1,6 @@
 """Tests for src/sitemap.py."""
-import re
-import tempfile
 from pathlib import Path
 from unittest.mock import patch
-
-import pytest
-
 
 SAMPLE_PAGES = [
     {"page_type": "best", "slug": "best-ai-code-review-tools", "title": "Best AI Code Review Tools", "primary_keyword": "best ai code review tools", "intent": "Find review tools"},

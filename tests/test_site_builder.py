@@ -1,11 +1,7 @@
 """Tests for src/site_builder.py — page rendering and index generation."""
 import re
-import tempfile
 from pathlib import Path
 from unittest.mock import patch
-
-import pytest
-
 
 SITE_CFG = {
     "site_name": "Test Site",
@@ -48,7 +44,6 @@ def _patch_cfg():
 
 class TestRenderContentPage:
     def test_html_file_created(self, tmp_path):
-        template_dir = Path(__file__).parent.parent / "templates"
         out = tmp_path / "best" / "best-ai-code-review-tools"
 
         with _patch_cfg():
@@ -163,8 +158,9 @@ class TestMarkdownToHtml:
 
 class TestBuildFaqSchema:
     def test_schema_type(self):
-        from src.site_builder import _build_faq_schema
         import json
+
+        from src.site_builder import _build_faq_schema
 
         faq = [{"question": "What is X?", "answer": "X is Y."}]
         schema_str = _build_faq_schema(faq, "https://example.com/page/")
@@ -172,8 +168,9 @@ class TestBuildFaqSchema:
         assert schema["@type"] == "FAQPage"
 
     def test_schema_contains_questions(self):
-        from src.site_builder import _build_faq_schema
         import json
+
+        from src.site_builder import _build_faq_schema
 
         faq = [
             {"question": "Q1?", "answer": "A1."},
@@ -185,8 +182,9 @@ class TestBuildFaqSchema:
         assert schema["mainEntity"][0]["name"] == "Q1?"
 
     def test_empty_faq(self):
-        from src.site_builder import _build_faq_schema
         import json
+
+        from src.site_builder import _build_faq_schema
 
         schema_str = _build_faq_schema([], "https://example.com/page/")
         schema = json.loads(schema_str)
@@ -197,8 +195,8 @@ class TestSlugConsistency:
     """Ensure page slugs are URL-safe and unique."""
 
     def test_all_slugs_are_url_safe(self):
+
         import yaml
-        from pathlib import Path
 
         pages_path = Path(__file__).parent.parent / "config" / "pages.yaml"
         with open(pages_path, encoding="utf-8") as f:
@@ -210,8 +208,8 @@ class TestSlugConsistency:
             assert slug_re.match(slug), f"Slug '{slug}' is not URL-safe"
 
     def test_all_slugs_are_unique(self):
+
         import yaml
-        from pathlib import Path
 
         pages_path = Path(__file__).parent.parent / "config" / "pages.yaml"
         with open(pages_path, encoding="utf-8") as f:
@@ -221,8 +219,8 @@ class TestSlugConsistency:
         assert len(slugs) == len(set(slugs)), "Duplicate slugs found in pages.yaml"
 
     def test_minimum_page_count(self):
+
         import yaml
-        from pathlib import Path
 
         pages_path = Path(__file__).parent.parent / "config" / "pages.yaml"
         with open(pages_path, encoding="utf-8") as f:
@@ -231,8 +229,8 @@ class TestSlugConsistency:
         assert len(pages) >= 60, f"Expected at least 60 pages, got {len(pages)}"
 
     def test_best_and_vs_pages_present(self):
+
         import yaml
-        from pathlib import Path
 
         pages_path = Path(__file__).parent.parent / "config" / "pages.yaml"
         with open(pages_path, encoding="utf-8") as f:

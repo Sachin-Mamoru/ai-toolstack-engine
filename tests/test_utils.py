@@ -1,5 +1,4 @@
 """Tests for src/utils.py utility functions."""
-import pytest
 
 from src.utils import extract_headings, slugify, truncate, utc_today, word_count
 

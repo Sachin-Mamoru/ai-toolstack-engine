@@ -65,7 +65,6 @@ def generate_rss_feed(all_pages: list[dict], published_slugs: set[str]) -> None:
     cfg = get_site_config()
     site_url = cfg["site_url"].rstrip("/")
     site_name = cfg["site_name"]
-    today = utc_today()
     pub_date = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
 
     # Show latest 20 published pages

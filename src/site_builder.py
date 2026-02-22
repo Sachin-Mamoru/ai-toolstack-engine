@@ -3,15 +3,13 @@ from __future__ import annotations
 
 import json
 import logging
-import re
 import shutil
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 import markdown as md_lib
 
-from .config_loader import get_site_config, load_affiliates
+from .config_loader import get_site_config
 from .utils import utc_today
 
 logger = logging.getLogger(__name__)
@@ -329,7 +327,7 @@ You can disable cookies in your browser settings at any time.
 ## Affiliate Links
 
 Some links on this site are affiliate links. This means we may earn a commission if you
-click through and make a purchase, at no extra cost to you.  
+click through and make a purchase, at no extra cost to you.
 We only recommend tools we believe are genuinely useful. Affiliate relationships do not
 influence our editorial judgement.
 

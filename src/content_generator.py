@@ -12,7 +12,7 @@ from typing import Any
 from google import genai
 from google.genai import types as genai_types
 
-from .config_loader import load_affiliates, load_tools
+from .config_loader import load_tools
 from .utils import truncate, utc_today, word_count
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ _RETRY_DELAY = 5  # seconds
 def _init_gemini() -> genai.Client:
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        raise EnvironmentError("GEMINI_API_KEY environment variable is not set.")
+        raise OSError("GEMINI_API_KEY environment variable is not set.")
     return genai.Client(api_key=api_key)
 
 

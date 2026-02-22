@@ -2,8 +2,8 @@ name: Daily Generate & Deploy
 
 on:
   schedule:
-    # Run at 06:00 UTC every day
-    - cron: "0 6 * * *"
+    # Run at 03:17 UTC every day
+    - cron: "17 3 * * *"
   workflow_dispatch:
     inputs:
       pages:

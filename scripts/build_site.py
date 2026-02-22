@@ -16,7 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.config_loader import get_published_slugs, get_site_config, load_pages
+from src.config_loader import get_published_slugs, load_pages
 from src.site_builder import (
     CONTENT_DIR,
     REPO_ROOT,
