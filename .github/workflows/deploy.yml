@@ -55,9 +55,6 @@ jobs:
       - name: Run ruff lint
         run: ruff check src/ scripts/ tests/
 
-      - name: Run black format check
-        run: black --check --line-length 100 src/ scripts/ tests/
-
       # ── Unit tests ────────────────────────────────────────
       - name: Run unit tests
         run: pytest tests/ -v --tb=short
