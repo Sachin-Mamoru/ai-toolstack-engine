@@ -75,10 +75,38 @@ jobs:
           fi
           echo "GEMINI_API_KEY is configured (${#GEMINI_API_KEY} chars)"
 
+      # ── API smoke test ────────────────────────────────────
+      - name: Smoke test Gemini API
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
+        run: |
+          python - <<'EOF'
+          import os, sys
+          from google import genai
+          key = os.environ["GEMINI_API_KEY"]
+          model = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+          client = genai.Client(api_key=key)
+          print(f"--- Testing model: {model} ---")
+          try:
+              resp = client.models.generate_content(model=model, contents="Reply OK")
+              print("Smoke test PASSED:", repr(resp.text)[:80])
+          except Exception as exc:
+              print(f"Smoke test FAILED: {type(exc).__name__}: {exc}")
+              print("--- Available models ---")
+              try:
+                  for m in client.models.list():
+                      print(" ", getattr(m, "name", "?"))
+              except Exception as le:
+                  print(f"  ListModels also failed: {le}")
+              sys.exit(1)
+          EOF
+
       # ── Generate new pages ────────────────────────────────
       - name: Generate new pages
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
           PAGES_PER_DAY: ${{ github.event.inputs.pages || '3' }}
           SITE_URL: ${{ vars.SITE_URL || 'https://aidevtools.me' }}
           SITE_NAME: ${{ vars.SITE_NAME || 'AI ToolStack Engine' }}
