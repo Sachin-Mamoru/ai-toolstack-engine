@@ -129,6 +129,16 @@ jobs:
             echo "No generation_errors.txt found"
           fi
 
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generation-debug
+          path: |
+            generation_errors.txt
+          if-no-files-found: ignore
+          retention-days: 3
+
       # ── Build static site ─────────────────────────────────
       - name: Build static site
         env:

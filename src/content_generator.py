@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import json
 import logging
 import os
-import re
 import textwrap
 import time
 from typing import Any
@@ -275,17 +273,21 @@ Write an article of 1400–2000 words covering:
 9. A "Last Updated: {today}" line at the very top.
 
 ## Output format
-Return ONLY a valid JSON object with these exact fields — no markdown fences, no extra text:
-{{
-  "title": "<page title>",
-  "meta_description": "<150–160 char SEO meta description>",
-  "article_markdown": "<full article in markdown, 1400–2000 words>",
-  "faq": [
-    {{"question": "...", "answer": "..."}},
-    ...
-  ],
-  "affiliate_slots": ["TOP", "MID", "BOTTOM"]
-}}
+Reply with EXACTLY this structure — plain text with delimiter lines, nothing else:
+
+<<<TITLE>>>
+(your page title here)
+<<<META>>>
+(your 150–160 char meta description here)
+<<<ARTICLE>>>
+(your full markdown article here, 1400–2000 words)
+<<<FAQ>>>
+Q: (first question?)
+A: (first answer.)
+
+Q: (second question?)
+A: (second answer.)
+<<<END>>>
 """
 ).strip()
 
@@ -328,70 +330,80 @@ Write a comparison article of 1400–2000 words covering:
 9. A "Last Updated: {today}" line at the very top.
 
 ## Output format
-Return ONLY a valid JSON object with these exact fields — no markdown fences, no extra text:
-{{
-  "title": "<page title>",
-  "meta_description": "<150–160 char SEO meta description>",
-  "article_markdown": "<full article in markdown, 1400–2000 words>",
-  "faq": [
-    {{"question": "...", "answer": "..."}},
-    ...
-  ],
-  "affiliate_slots": ["TOP", "MID", "BOTTOM"]
-}}
+Reply with EXACTLY this structure — plain text with delimiter lines, nothing else:
+
+<<<TITLE>>>
+(your page title here)
+<<<META>>>
+(your 150–160 char meta description here)
+<<<ARTICLE>>>
+(your full markdown article here, 1400–2000 words)
+<<<FAQ>>>
+Q: (first question?)
+A: (first answer.)
+
+Q: (second question?)
+A: (second answer.)
+<<<END>>>
 """
 ).strip()
 
 
-def _repair_json(text: str) -> str:
-    """Fix common JSON issues produced by LLMs: literal newlines/CRs inside strings."""
-    result: list[str] = []
-    in_string = False
-    escape_next = False
-    for ch in text:
-        if escape_next:
-            result.append(ch)
-            escape_next = False
-            continue
-        if ch == "\\":
-            result.append(ch)
-            escape_next = True
-            continue
-        if ch == '"':
-            in_string = not in_string
-            result.append(ch)
-            continue
-        if in_string:
-            if ch == "\n":
-                result.append("\\n")
-                continue
-            if ch == "\r":
-                result.append("\\r")
-                continue
-        result.append(ch)
-    return "".join(result)
+def _parse_delimited_response(raw: str) -> dict[str, Any]:
+    """Parse the structured delimiter-based response from the model.
 
+    Expected format (no JSON, no escaping issues with markdown content)::
 
-def _parse_json_response(raw: str) -> dict[str, Any]:
-    """Extract and parse JSON from model response, stripping accidental fences.
-
-    Falls back to _repair_json() when the raw response contains literal
-    newlines or CRs inside JSON string values (a common LLM quirk).
+        <<<TITLE>>>
+        page title
+        <<<META>>>
+        meta description
+        <<<ARTICLE>>>
+        full markdown article ...
+        <<<FAQ>>>
+        Q: question?
+        A: answer.
+        <<<END>>>
     """
-    text = raw.strip()
-    # Strip ```json ... ``` fences if present
-    if text.startswith("```"):
-        text = re.sub(r"^```[a-z]*\n?", "", text, flags=re.IGNORECASE)
-        text = re.sub(r"\n?```$", "", text)
-        text = text.strip()
-    # First attempt: strict parse
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        pass
-    # Second attempt: repair literal newlines/CRs inside strings then parse
-    repaired = _repair_json(text)
-    return json.loads(repaired)
+    DELIMITERS = ["<<<TITLE>>>", "<<<META>>>", "<<<ARTICLE>>>", "<<<FAQ>>>", "<<<END>>>"]
+
+    def _extract(text: str, start_tag: str, end_tag: str) -> str:
+        start = text.find(start_tag)
+        end = text.find(end_tag, start + len(start_tag))
+        if start == -1 or end == -1:
+            return ""
+        return text[start + len(start_tag):end].strip()
+
+    title = _extract(raw, "<<<TITLE>>>", "<<<META>>>")
+    meta = _extract(raw, "<<<META>>>", "<<<ARTICLE>>>")
+    article = _extract(raw, "<<<ARTICLE>>>", "<<<FAQ>>>")
+    faq_raw = _extract(raw, "<<<FAQ>>>", "<<<END>>>")
+
+    if not article:
+        raise ValueError(
+            f"Missing <<<ARTICLE>>> section in model response. "
+            f"Got delimiters: {[d for d in DELIMITERS if d in raw]!r}. "
+            f"Response start: {raw[:300]!r}"
+        )
+
+    # Parse Q/A pairs from the FAQ block
+    faq: list[dict[str, str]] = []
+    current_q: str | None = None
+    for line in faq_raw.splitlines():
+        line = line.strip()
+        if line.startswith("Q:"):
+            current_q = line[2:].strip()
+        elif line.startswith("A:") and current_q is not None:
+            faq.append({"question": current_q, "answer": line[2:].strip()})
+            current_q = None
+
+    return {
+        "title": title,
+        "meta_description": meta,
+        "article_markdown": article,
+        "faq": faq,
+        "affiliate_slots": ["TOP", "MID", "BOTTOM"],
+    }
 
 
 def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> str:
@@ -482,10 +494,10 @@ def generate_page_content(
     logger.debug("Raw response for %s (first 500 chars): %s", page["slug"], raw[:500])
 
     try:
-        result = _parse_json_response(raw)
-    except (json.JSONDecodeError, ValueError) as exc:
+        result = _parse_delimited_response(raw)
+    except ValueError as exc:
         logger.error(
-            "JSON parse failed for %s: %s\nFirst 800 chars of raw:\n%s\nLast 200 chars:\n%s",
+            "Delimiter parse failed for %s: %s\nFirst 800 chars of raw:\n%s\nLast 200 chars:\n%s",
             page["slug"], exc, raw[:800], raw[-200:],
         )
         raise
