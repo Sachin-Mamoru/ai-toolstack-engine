@@ -356,6 +356,7 @@ def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> st
                 config=genai_types.GenerateContentConfig(
                     temperature=0.4,
                     max_output_tokens=8192,
+                    response_mime_type="application/json",
                 ),
             )
             return response.text
