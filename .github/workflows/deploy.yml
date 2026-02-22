@@ -62,6 +62,19 @@ jobs:
       - name: Run unit tests
         run: pytest tests/ -v --tb=short
 
+      # ── Pre-flight: verify secrets ────────────────────────
+      - name: Verify GEMINI_API_KEY is configured
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "ERROR: GEMINI_API_KEY secret is not set."
+            echo "Go to: Settings > Secrets and variables > Actions > New repository secret"
+            echo "Name: GEMINI_API_KEY  |  Value: your Gemini API key from aistudio.google.com"
+            exit 1
+          fi
+          echo "GEMINI_API_KEY is configured (${#GEMINI_API_KEY} chars)"
+
       # ── Generate new pages ────────────────────────────────
       - name: Generate new pages
         env:
