@@ -102,6 +102,13 @@ jobs:
               sys.exit(1)
           EOF
 
+      # ── Pull latest committed content before deciding what to generate ──
+      - name: Pull latest content
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git pull --rebase origin main
+
       # ── Generate new pages ────────────────────────────────
       - name: Generate new pages
         env:

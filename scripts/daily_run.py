@@ -127,8 +127,20 @@ def main() -> None:
     tools = load_tools()
     affiliates = load_affiliates()
     generated_count = 0
+    skipped_count = 0
 
     for page_spec in to_generate:
+        slug = page_spec["slug"]
+        page_type = page_spec.get("page_type", "best")
+
+        # Re-check on disk right before each Gemini call — guards against
+        # concurrent runs or a previous iteration writing the file.
+        out_path = CONTENT_DIR / page_type / f"{slug}.md"
+        if out_path.exists():
+            logger.info("Skip (already exists): %s", slug)
+            skipped_count += 1
+            continue
+
         try:
             generated = generate_page_content(page_spec, all_pages, tools=tools)
             # Inject affiliate links into the article markdown
@@ -138,15 +150,17 @@ def main() -> None:
             save_markdown(page_spec, generated)
             generated_count += 1
         except Exception as exc:
-            logger.exception("Failed to generate %s: %s", page_spec["slug"], exc)
+            logger.exception("Failed to generate %s: %s", slug, exc)
             continue
 
+    attempted = len(to_generate) - skipped_count
     logger.info(
-        "Daily generation complete. Generated %d/%d pages.",
+        "Daily generation complete. Generated %d/%d pages (skipped %d already-published).",
         generated_count,
-        len(to_generate),
+        attempted,
+        skipped_count,
     )
-    if generated_count == 0 and len(to_generate) > 0:
+    if generated_count == 0 and attempted > 0:
         logger.error("All page generations failed. Exiting with error.")
         sys.exit(1)
 
