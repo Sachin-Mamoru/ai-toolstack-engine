@@ -1,4 +1,5 @@
 """Generates sitemap.xml, robots.txt, and RSS feed."""
+
 from __future__ import annotations
 
 import logging
@@ -50,11 +51,7 @@ def generate_robots_txt() -> None:
     """Write site/robots.txt."""
     cfg = get_site_config()
     site_url = cfg["site_url"].rstrip("/")
-    robots = (
-        "User-agent: *\n"
-        "Allow: /\n"
-        f"Sitemap: {site_url}/sitemap.xml\n"
-    )
+    robots = "User-agent: *\n" "Allow: /\n" f"Sitemap: {site_url}/sitemap.xml\n"
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     (SITE_DIR / "robots.txt").write_text(robots, encoding="utf-8")
     logger.info("Generated robots.txt")
@@ -80,7 +77,7 @@ def generate_rss_feed(all_pages: list[dict], published_slugs: set[str]) -> None:
             f"  <item>\n"
             f"    <title><![CDATA[{title}]]></title>\n"
             f"    <link>{page_url}</link>\n"
-            f"    <guid isPermaLink=\"true\">{page_url}</guid>\n"
+            f'    <guid isPermaLink="true">{page_url}</guid>\n'
             f"    <description><![CDATA[{desc}]]></description>\n"
             f"    <pubDate>{pub_date}</pubDate>\n"
             f"  </item>"

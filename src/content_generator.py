@@ -1,4 +1,5 @@
 """Content generator: uses Gemini API to produce SEO articles for each page spec."""
+
 from __future__ import annotations
 
 import json
@@ -32,10 +33,36 @@ def _init_gemini() -> genai.Client:
 def _build_tools_context(page: dict, tools: list[dict]) -> str:
     """Return a compact YAML-like block of relevant tool info for the prompt."""
     category_keywords = {
-        "coding_assistant": ["copilot", "cursor", "codeium", "tabnine", "aider", "cody", "continue"],
-        "code_review": ["review", "coderabbit", "codeclimate", "sonar", "codacy", "deepsource", "qodo"],
+        "coding_assistant": [
+            "copilot",
+            "cursor",
+            "codeium",
+            "tabnine",
+            "aider",
+            "cody",
+            "continue",
+        ],
+        "code_review": [
+            "review",
+            "coderabbit",
+            "codeclimate",
+            "sonar",
+            "codacy",
+            "deepsource",
+            "qodo",
+        ],
         "security_scanning": ["security", "snyk", "semgrep", "checkov", "scan"],
-        "observability": ["observabil", "monitor", "datadog", "grafana", "new relic", "dynatrace", "elastic", "splunk", "sentry"],
+        "observability": [
+            "observabil",
+            "monitor",
+            "datadog",
+            "grafana",
+            "new relic",
+            "dynatrace",
+            "elastic",
+            "splunk",
+            "sentry",
+        ],
         "incident_management": ["incident", "pagerduty", "opsgenie"],
         "iac": ["terraform", "pulumi", "ansible", "infrastructure", "iac"],
         "kubernetes": ["kubernetes", "k8s", "k9s", "lens", "karpenter"],
@@ -54,7 +81,9 @@ def _build_tools_context(page: dict, tools: list[dict]) -> str:
         tool_name = tool["name"].lower()
         cat = tool.get("category", "")
         match = any(kw in combined for kw in category_keywords.get(cat, []))
-        name_match = tool_name.split()[0] in combined or any(w in combined for w in tool_name.split())
+        name_match = tool_name.split()[0] in combined or any(
+            w in combined for w in tool_name.split()
+        )
         if match or name_match:
             relevant.append(tool)
 
@@ -93,7 +122,11 @@ def _build_internal_links(page: dict, all_pages: list[dict]) -> str:
 
     if not top:
         # Fallback: pick random pages of same type
-        same_type = [p for p in all_pages if p.get("page_type") == page.get("page_type") and p.get("slug") != current_slug]
+        same_type = [
+            p
+            for p in all_pages
+            if p.get("page_type") == page.get("page_type") and p.get("slug") != current_slug
+        ]
         top = same_type[:5]
 
     links = []
@@ -106,7 +139,8 @@ def _build_internal_links(page: dict, all_pages: list[dict]) -> str:
     return "\n".join(f"- {lnk}" for lnk in links)
 
 
-BEST_PAGE_PROMPT = textwrap.dedent("""
+BEST_PAGE_PROMPT = textwrap.dedent(
+    """
 You are a senior DevOps engineer writing a practical, SEO-optimised article for developers.
 Do NOT use marketing hype. Be direct, technical, and honest.
 
@@ -150,10 +184,12 @@ Return ONLY a valid JSON object with these exact fields — no markdown fences, 
   ],
   "affiliate_slots": ["TOP", "MID", "BOTTOM"]
 }}
-""").strip()
+"""
+).strip()
 
 
-VS_PAGE_PROMPT = textwrap.dedent("""
+VS_PAGE_PROMPT = textwrap.dedent(
+    """
 You are a senior software engineer writing an honest, practical comparison article for other developers.
 No hype. No sponsored tone. Treat readers as intelligent engineers who need real information.
 
@@ -201,7 +237,8 @@ Return ONLY a valid JSON object with these exact fields — no markdown fences, 
   ],
   "affiliate_slots": ["TOP", "MID", "BOTTOM"]
 }}
-""").strip()
+"""
+).strip()
 
 
 def _parse_json_response(raw: str) -> dict[str, Any]:
@@ -315,17 +352,19 @@ def inject_affiliate_links(
 ) -> str:
     """Replace CTA marker comments with real affiliate link blocks."""
     # Find which tools are mentioned in the article
-    mentioned_tools = [
-        t for t in tools
-        if t["name"].lower() in markdown.lower()
-    ][:3]  # top 3
+    mentioned_tools = [t for t in tools if t["name"].lower() in markdown.lower()][:3]  # top 3
 
     def make_cta(position: str) -> str:
         if not mentioned_tools:
             return ""
-        tool = mentioned_tools[0] if position == "TOP" else (
-            mentioned_tools[1] if position == "MID" and len(mentioned_tools) > 1
-            else mentioned_tools[-1]
+        tool = (
+            mentioned_tools[0]
+            if position == "TOP"
+            else (
+                mentioned_tools[1]
+                if position == "MID" and len(mentioned_tools) > 1
+                else mentioned_tools[-1]
+            )
         )
         url = affiliates.get(tool["name"], tool.get("homepage_url", "#"))
         verb = "Try" if position in ("TOP", "MID") else "Get started with"

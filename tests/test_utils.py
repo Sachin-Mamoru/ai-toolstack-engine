@@ -112,4 +112,5 @@ class TestUtcToday:
     def test_format(self):
         today = utc_today()
         import re
+
         assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", today), f"Unexpected format: {today}"

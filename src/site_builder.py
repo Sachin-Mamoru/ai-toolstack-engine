@@ -1,4 +1,5 @@
 """Static site builder: converts markdown content to HTML pages under site/."""
+
 from __future__ import annotations
 
 import json
@@ -24,6 +25,7 @@ TEMPLATES_DIR = REPO_ROOT / "templates"
 # Low-level HTML helpers
 # ---------------------------------------------------------------------------
 
+
 def _read_template(name: str) -> str:
     path = TEMPLATES_DIR / name
     if not path.exists():
@@ -46,6 +48,7 @@ def _render_template(template_name: str, **context: Any) -> str:
 # ---------------------------------------------------------------------------
 # Per-page rendering
 # ---------------------------------------------------------------------------
+
 
 def _build_faq_schema(faq: list[dict], page_url: str) -> str:
     """Generate JSON-LD FAQPage schema string."""
@@ -114,11 +117,7 @@ def render_content_page(
 
     faq_schema_script = ""
     if faq_schema:
-        faq_schema_script = (
-            '<script type="application/ld+json">\n'
-            + faq_schema
-            + '\n</script>'
-        )
+        faq_schema_script = '<script type="application/ld+json">\n' + faq_schema + "\n</script>"
 
     adsense_block = ""
     if cfg.get("adsense_publisher_id"):
@@ -127,7 +126,7 @@ def render_content_page(
             f'?client={cfg["adsense_publisher_id"]}" crossorigin="anonymous"></script>\n'
             f'<ins class="adsbygoogle" style="display:block" data-ad-client="{cfg["adsense_publisher_id"]}"'
             f' data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>\n'
-            f'<script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>'
+            f"<script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>"
         )
 
     html = _render_template(
@@ -156,6 +155,7 @@ def render_content_page(
 # Index pages
 # ---------------------------------------------------------------------------
 
+
 def _page_card_html(p: dict, site_url: str) -> str:
     page_type = p.get("page_type", "best")
     slug = p.get("slug", "")
@@ -165,7 +165,7 @@ def _page_card_html(p: dict, site_url: str) -> str:
     return (
         f'<article class="card">'
         f'<h2><a href="{url}">{title}</a></h2>'
-        f'<p>{desc}</p>'
+        f"<p>{desc}</p>"
         f'<a class="btn" href="{url}">Read →</a>'
         f"</article>"
     )
@@ -265,6 +265,7 @@ def build_index_pages(all_pages: list[dict], published_slugs: set[str]) -> None:
 # Homepage
 # ---------------------------------------------------------------------------
 
+
 def build_homepage(all_pages: list[dict], published_slugs: set[str]) -> None:
     """Build the root index.html."""
     cfg = get_site_config()
@@ -292,6 +293,7 @@ def build_homepage(all_pages: list[dict], published_slugs: set[str]) -> None:
 # ---------------------------------------------------------------------------
 # Copy static assets
 # ---------------------------------------------------------------------------
+
 
 def copy_static_assets() -> None:
     """Copy CSS/JS/images from templates/static to site/static."""
@@ -410,9 +412,24 @@ def build_static_pages() -> None:
     today = utc_today()
 
     pages = [
-        ("privacy", "Privacy Policy", "Our privacy policy covering analytics, cookies, and affiliate links.", _PRIVACY_MD.format(today=today)),
-        ("about", "About AI ToolStack Engine", "Independent AI tool comparisons for developers and DevOps engineers.", _ABOUT_MD),
-        ("contact", "Contact Us", "Get in touch with corrections, questions, or partnership enquiries.", _CONTACT_MD),
+        (
+            "privacy",
+            "Privacy Policy",
+            "Our privacy policy covering analytics, cookies, and affiliate links.",
+            _PRIVACY_MD.format(today=today),
+        ),
+        (
+            "about",
+            "About AI ToolStack Engine",
+            "Independent AI tool comparisons for developers and DevOps engineers.",
+            _ABOUT_MD,
+        ),
+        (
+            "contact",
+            "Contact Us",
+            "Get in touch with corrections, questions, or partnership enquiries.",
+            _CONTACT_MD,
+        ),
     ]
 
     for slug, title, description, md_content in pages:

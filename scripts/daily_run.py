@@ -7,6 +7,7 @@ Picks N unpublished pages from config/pages.yaml (in order), generates
 content using Gemini, writes markdown to content/, then triggers a full
 site rebuild.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -70,18 +71,20 @@ def save_markdown(page_spec: dict, generated: dict) -> Path:
     out_path = out_dir / f"{slug}.md"
 
     # Front-matter + article
-    front_matter = "\n".join([
-        "---",
-        f"title: {json.dumps(generated.get('title', page_spec['title']))}",
-        f"slug: {slug}",
-        f"page_type: {page_type}",
-        f"primary_keyword: {page_spec.get('primary_keyword', '')}",
-        f"meta_description: {json.dumps(generated.get('meta_description', ''))}",
-        f"date_published: {utc_today()}",
-        f"last_updated: {utc_today()}",
-        "---",
-        "",
-    ])
+    front_matter = "\n".join(
+        [
+            "---",
+            f"title: {json.dumps(generated.get('title', page_spec['title']))}",
+            f"slug: {slug}",
+            f"page_type: {page_type}",
+            f"primary_keyword: {page_spec.get('primary_keyword', '')}",
+            f"meta_description: {json.dumps(generated.get('meta_description', ''))}",
+            f"date_published: {utc_today()}",
+            f"last_updated: {utc_today()}",
+            "---",
+            "",
+        ]
+    )
 
     faq_block = ""
     if generated.get("faq"):

@@ -1,11 +1,30 @@
 """Tests for src/sitemap.py."""
+
 from pathlib import Path
 from unittest.mock import patch
 
 SAMPLE_PAGES = [
-    {"page_type": "best", "slug": "best-ai-code-review-tools", "title": "Best AI Code Review Tools", "primary_keyword": "best ai code review tools", "intent": "Find review tools"},
-    {"page_type": "vs", "slug": "github-copilot-vs-cursor", "title": "GitHub Copilot vs Cursor", "primary_keyword": "github copilot vs cursor", "intent": "Choose between them"},
-    {"page_type": "best", "slug": "best-ai-tools-for-kubernetes", "title": "Best AI Tools for Kubernetes", "primary_keyword": "best ai tools for kubernetes", "intent": "K8s AI tools"},
+    {
+        "page_type": "best",
+        "slug": "best-ai-code-review-tools",
+        "title": "Best AI Code Review Tools",
+        "primary_keyword": "best ai code review tools",
+        "intent": "Find review tools",
+    },
+    {
+        "page_type": "vs",
+        "slug": "github-copilot-vs-cursor",
+        "title": "GitHub Copilot vs Cursor",
+        "primary_keyword": "github copilot vs cursor",
+        "intent": "Choose between them",
+    },
+    {
+        "page_type": "best",
+        "slug": "best-ai-tools-for-kubernetes",
+        "title": "Best AI Tools for Kubernetes",
+        "primary_keyword": "best ai tools for kubernetes",
+        "intent": "K8s AI tools",
+    },
 ]
 PUBLISHED_SLUGS = {"best-ai-code-review-tools", "github-copilot-vs-cursor"}
 
@@ -31,6 +50,7 @@ class TestGenerateSitemap:
     def test_sitemap_created(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_sitemap
+
             generate_sitemap(SAMPLE_PAGES, PUBLISHED_SLUGS)
 
         sitemap_path = tmp_path / "sitemap.xml"
@@ -39,6 +59,7 @@ class TestGenerateSitemap:
     def test_sitemap_contains_published_urls(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_sitemap
+
             generate_sitemap(SAMPLE_PAGES, PUBLISHED_SLUGS)
 
         content = (tmp_path / "sitemap.xml").read_text()
@@ -48,6 +69,7 @@ class TestGenerateSitemap:
     def test_sitemap_excludes_unpublished(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_sitemap
+
             generate_sitemap(SAMPLE_PAGES, PUBLISHED_SLUGS)
 
         content = (tmp_path / "sitemap.xml").read_text()
@@ -56,6 +78,7 @@ class TestGenerateSitemap:
     def test_sitemap_valid_xml(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_sitemap
+
             generate_sitemap(SAMPLE_PAGES, PUBLISHED_SLUGS)
 
         content = (tmp_path / "sitemap.xml").read_text()
@@ -66,6 +89,7 @@ class TestGenerateSitemap:
     def test_sitemap_includes_index_pages(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_sitemap
+
             generate_sitemap(SAMPLE_PAGES, PUBLISHED_SLUGS)
 
         content = (tmp_path / "sitemap.xml").read_text()
@@ -78,6 +102,7 @@ class TestGenerateRobotsTxt:
     def test_robots_created(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_robots_txt
+
             generate_robots_txt()
 
         assert (tmp_path / "robots.txt").exists()
@@ -85,6 +110,7 @@ class TestGenerateRobotsTxt:
     def test_robots_allows_all(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_robots_txt
+
             generate_robots_txt()
 
         content = (tmp_path / "robots.txt").read_text()
@@ -94,6 +120,7 @@ class TestGenerateRobotsTxt:
     def test_robots_has_sitemap(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_robots_txt
+
             generate_robots_txt()
 
         content = (tmp_path / "robots.txt").read_text()
@@ -105,6 +132,7 @@ class TestGenerateRssFeed:
     def test_rss_created(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_rss_feed
+
             generate_rss_feed(SAMPLE_PAGES, PUBLISHED_SLUGS)
 
         assert (tmp_path / "rss.xml").exists()
@@ -112,6 +140,7 @@ class TestGenerateRssFeed:
     def test_rss_valid_structure(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_rss_feed
+
             generate_rss_feed(SAMPLE_PAGES, PUBLISHED_SLUGS)
 
         content = (tmp_path / "rss.xml").read_text()
@@ -124,6 +153,7 @@ class TestGenerateRssFeed:
     def test_rss_contains_published_items(self, tmp_path):
         with _patch_site_dir(tmp_path), _patch_cfg():
             from src.sitemap import generate_rss_feed
+
             generate_rss_feed(SAMPLE_PAGES, PUBLISHED_SLUGS)
 
         content = (tmp_path / "rss.xml").read_text()

@@ -6,6 +6,7 @@ Usage:
 Reads all markdown files in content/, renders them to HTML under site/,
 and regenerates all index pages, sitemap, robots.txt, and RSS feed.
 """
+
 from __future__ import annotations
 
 import logging
@@ -37,7 +38,7 @@ logging.basicConfig(
 logger = logging.getLogger("build_site")
 
 _FRONT_MATTER_RE = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)
-_FIELD_RE = re.compile(r'^(\w+):\s*(.+)$', re.MULTILINE)
+_FIELD_RE = re.compile(r"^(\w+):\s*(.+)$", re.MULTILINE)
 
 
 def parse_front_matter(text: str) -> dict:
@@ -53,6 +54,7 @@ def parse_front_matter(text: str) -> dict:
         if value.startswith('"') and value.endswith('"'):
             try:
                 import json
+
                 value = json.loads(value)
             except Exception:
                 pass

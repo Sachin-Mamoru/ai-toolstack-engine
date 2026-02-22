@@ -1,4 +1,5 @@
 """Tests for src/site_builder.py — page rendering and index generation."""
+
 import re
 from pathlib import Path
 from unittest.mock import patch
@@ -31,8 +32,14 @@ SAMPLE_GENERATED = {
         "### What is the best AI code review tool?\n\nCodeRabbit is widely regarded...\n"
     ),
     "faq": [
-        {"question": "What is the best AI code review tool?", "answer": "CodeRabbit is widely regarded..."},
-        {"question": "Are AI code review tools worth it?", "answer": "Yes, they save significant time..."},
+        {
+            "question": "What is the best AI code review tool?",
+            "answer": "CodeRabbit is widely regarded...",
+        },
+        {
+            "question": "Are AI code review tools worth it?",
+            "answer": "Yes, they save significant time...",
+        },
     ],
     "affiliate_slots": ["TOP", "MID", "BOTTOM"],
 }
@@ -48,6 +55,7 @@ class TestRenderContentPage:
 
         with _patch_cfg():
             from src.site_builder import render_content_page
+
             result = render_content_page(SAMPLE_PAGE_SPEC, SAMPLE_GENERATED, out)
 
         assert result.exists()
@@ -57,6 +65,7 @@ class TestRenderContentPage:
         out = tmp_path / "best" / "best-ai-code-review-tools"
         with _patch_cfg():
             from src.site_builder import render_content_page
+
             render_content_page(SAMPLE_PAGE_SPEC, SAMPLE_GENERATED, out)
 
         content = (out / "index.html").read_text()
@@ -66,6 +75,7 @@ class TestRenderContentPage:
         out = tmp_path / "best" / "best-ai-code-review-tools"
         with _patch_cfg():
             from src.site_builder import render_content_page
+
             render_content_page(SAMPLE_PAGE_SPEC, SAMPLE_GENERATED, out)
 
         content = (out / "index.html").read_text()
@@ -76,6 +86,7 @@ class TestRenderContentPage:
         out = tmp_path / "best" / "best-ai-code-review-tools"
         with _patch_cfg():
             from src.site_builder import render_content_page
+
             render_content_page(SAMPLE_PAGE_SPEC, SAMPLE_GENERATED, out)
 
         content = (out / "index.html").read_text()
@@ -86,6 +97,7 @@ class TestRenderContentPage:
         out = tmp_path / "best" / "best-ai-code-review-tools"
         with _patch_cfg():
             from src.site_builder import render_content_page
+
             render_content_page(SAMPLE_PAGE_SPEC, SAMPLE_GENERATED, out)
 
         content = (out / "index.html").read_text()
@@ -95,6 +107,7 @@ class TestRenderContentPage:
         out = tmp_path / "best" / "best-ai-code-review-tools"
         with _patch_cfg():
             from src.site_builder import render_content_page
+
             render_content_page(SAMPLE_PAGE_SPEC, SAMPLE_GENERATED, out)
 
         content = (out / "index.html").read_text()
@@ -104,6 +117,7 @@ class TestRenderContentPage:
         out = tmp_path / "best" / "best-ai-code-review-tools"
         with _patch_cfg():
             from src.site_builder import render_content_page
+
             render_content_page(SAMPLE_PAGE_SPEC, SAMPLE_GENERATED, out)
 
         content = (out / "index.html").read_text()
@@ -116,6 +130,7 @@ class TestRenderContentPage:
 
         with _patch_cfg():
             from src.site_builder import render_content_page
+
             render_content_page(SAMPLE_PAGE_SPEC, SAMPLE_GENERATED, deeply_nested)
 
         assert (deeply_nested / "index.html").exists()
