@@ -14,7 +14,6 @@ import argparse
 import json
 import logging
 import sys
-import traceback
 from pathlib import Path
 
 # Make sure src/ is importable when run as a script
@@ -139,13 +138,7 @@ def main() -> None:
             save_markdown(page_spec, generated)
             generated_count += 1
         except Exception as exc:
-            err_detail = traceback.format_exc()
             logger.exception("Failed to generate %s: %s", page_spec["slug"], exc)
-            # Write to debug file so CI can surface it even if stdout is truncated
-            debug_file = REPO_ROOT / "generation_errors.txt"
-            with debug_file.open("a") as fh:
-                fh.write(f"\n=== {page_spec['slug']} ===\n{err_detail}\n")
-            # Continue with remaining pages rather than aborting the whole run
             continue
 
     logger.info(

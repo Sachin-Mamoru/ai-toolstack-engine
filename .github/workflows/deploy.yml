@@ -1,11 +1,15 @@
-name: Daily Generate & Deploy
+name: Generate & Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths:
+      - "config/**"
+      - "src/**"
+      - "scripts/**"
+      - "templates/**"
+      - ".github/workflows/deploy.yml"
   schedule:
-    # Run at 03:17 UTC every day
     - cron: "17 3 * * *"
   workflow_dispatch:
     inputs:
@@ -28,13 +32,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  generate-and-deploy:
+  generate_and_build:
+    name: Generate articles & build site
     runs-on: ubuntu-latest
     timeout-minutes: 30
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       # ── Checkout ──────────────────────────────────────────
@@ -42,7 +43,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       # ── Python setup ──────────────────────────────────────
       - name: Set up Python 3.11
@@ -118,28 +118,6 @@ jobs:
           fi
           python scripts/daily_run.py --pages "$PAGES_PER_DAY" $DRY_FLAG
 
-      # ── Print generation errors if any ───────────────────
-      - name: Print generation error log
-        if: always()
-        run: |  
-          if [ -f generation_errors.txt ]; then
-            echo "=== generation_errors.txt ==="
-            cat generation_errors.txt
-          else
-            echo "No generation_errors.txt found"
-          fi
-
-      - name: Upload debug artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: generation-debug
-          path: |
-            generation_errors.txt
-          if-no-files-found: ignore
-          retention-days: 3
-
-      # ── Build static site ─────────────────────────────────
       - name: Build static site
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://aidevtools.me' }}
