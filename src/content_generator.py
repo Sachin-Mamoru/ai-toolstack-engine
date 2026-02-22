@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import textwrap
 import time
 from typing import Any
@@ -578,3 +579,95 @@ def inject_affiliate_links(
         markdown = markdown.replace(marker, make_cta(pos))
 
     return markdown
+
+
+# ---------------------------------------------------------------------------
+# News-driven topic generation
+# ---------------------------------------------------------------------------
+
+_NEW_TOPICS_PROMPT = textwrap.dedent("""\
+    You are an expert SEO strategist for a developer-focused website about AI tools.
+
+    Below are recent news headlines about AI developer tools and technologies:
+    {headlines}
+
+    These slugs already exist on the site — do NOT suggest them:
+    {existing_slugs}
+
+    Based on the news above, suggest exactly {n} brand-new article topics that:
+    - Are about AI tools useful for software engineers / DevOps / platform engineers
+    - Would attract organic search traffic (practical "best X" or "A vs B" comparisons)
+    - Cover tools or trends mentioned or implied by the headlines
+    - Have NOT been covered by the existing slugs
+
+    Output ONLY the following format, no extra text:
+
+    <<<PAGE>>>
+    title: <Full article title including year>
+    slug: <url-safe-slug-with-hyphens>
+    page_type: <best OR vs>
+    primary_keyword: <main SEO keyword phrase, lowercase>
+    meta_description: <1-2 sentence meta description, under 160 chars>
+    <<<PAGE>>>
+    ... repeat for each topic ...
+    <<<END>>>
+""")
+
+
+def _parse_topic_specs(raw: str) -> list[dict]:
+    """Parse <<<PAGE>>> delimited topic specs from Gemini output."""
+    specs = []
+    blocks = re.split(r"<<<PAGE>>>", raw)
+    for block in blocks:
+        block = block.strip()
+        if not block or "<<<END>>>" in block:
+            continue
+        spec: dict[str, str] = {}
+        for line in block.splitlines():
+            if ":" in line:
+                key, _, val = line.partition(":")
+                spec[key.strip()] = val.strip()
+        slug = spec.get("slug", "")
+        # Sanitise slug: lowercase, strip non-alphanumeric except hyphens
+        slug = re.sub(r"[^a-z0-9-]", "", slug.lower().replace(" ", "-"))
+        if not slug or not spec.get("title"):
+            continue
+        specs.append({
+            "title": spec.get("title", ""),
+            "slug": slug,
+            "page_type": spec.get("page_type", "best"),
+            "primary_keyword": spec.get("primary_keyword", spec.get("title", "").lower()),
+            "meta_description": spec.get("meta_description", ""),
+        })
+    return specs
+
+
+def generate_new_page_specs_from_news(
+    headlines: list[str],
+    existing_slugs: set[str],
+    n: int = 5,
+) -> list[dict]:
+    """Ask Gemini to suggest n new article topics based on recent news headlines.
+
+    Returns a list of page spec dicts ready to be appended to pages.yaml.
+    Never returns specs whose slug already exists.
+    """
+    client, model = _init_gemini()
+
+    headlines_text = "\n".join(f"- {h}" for h in headlines[:40])
+    existing_text = ", ".join(sorted(existing_slugs)[:80])
+
+    prompt = _NEW_TOPICS_PROMPT.format(
+        headlines=headlines_text,
+        existing_slugs=existing_text,
+        n=n,
+    )
+
+    logger.info("Asking Gemini for %d new article topics based on %d headlines...", n, len(headlines))
+    raw = _call_gemini_with_retry(client, model, prompt)
+    specs = _parse_topic_specs(raw)
+
+    # Final guard: drop any slug that already exists
+    fresh = [s for s in specs if s["slug"] not in existing_slugs]
+    logger.info("Gemini suggested %d new topic(s)", len(fresh))
+    return fresh[:n]

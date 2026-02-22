@@ -22,14 +22,19 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.config_loader import (
-    get_last_updated_dates,
+    append_pages,
     get_published_slugs,
     get_site_config,
     load_affiliates,
     load_pages,
     load_tools,
 )
-from src.content_generator import generate_page_content, inject_affiliate_links
+from src.content_generator import (
+    generate_new_page_specs_from_news,
+    generate_page_content,
+    inject_affiliate_links,
+)
+from src.news_fetcher import fetch_headlines
 from src.utils import utc_today
 
 logging.basicConfig(
@@ -59,27 +64,10 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def pick_next_pages(
-    all_pages: list[dict],
-    published_slugs: set[str],
-    n: int,
-    last_updated: dict[str, str] | None = None,
-) -> tuple[list[dict], bool]:
-    """Return (pages_to_generate, is_refresh).
-
-    - First priority: unpublished pages (in config order).
-    - When all are published: pick the N pages with the oldest last_updated date
-      so content stays fresh and the cron never sits idle.
-    """
+def pick_next_pages(all_pages: list[dict], published_slugs: set[str], n: int) -> list[dict]:
+    """Return the next N unpublished pages in config order."""
     pending = [p for p in all_pages if p["slug"] not in published_slugs]
-    if pending:
-        return pending[:n], False
-
-    # All published — refresh oldest articles
-    dates = last_updated or {}
-    # Pages with no recorded date sort first (treat as oldest)
-    by_age = sorted(all_pages, key=lambda p: dates.get(p["slug"], "0000-00-00"))
-    return by_age[:n], True
+    return pending[:n]
 
 
 def save_markdown(page_spec: dict, generated: dict) -> Path:
@@ -139,7 +127,6 @@ def main() -> None:
 
     all_pages = load_pages()
     published_slugs = get_published_slugs(CONTENT_DIR)
-    last_updated_dates = get_last_updated_dates(CONTENT_DIR)
     logger.info(
         "Total pages: %d | Published: %d | Pending: %d",
         len(all_pages),
@@ -147,19 +134,40 @@ def main() -> None:
         len(all_pages) - len(published_slugs),
     )
 
-    to_generate, is_refresh = pick_next_pages(all_pages, published_slugs, n_pages, last_updated_dates)
-    if not to_generate:
-        logger.info("No pages to generate. Nothing to do.")
-        return
+    to_generate = pick_next_pages(all_pages, published_slugs, n_pages)
 
-    if is_refresh:
-        logger.info("All pages published — running in REFRESH mode (re-generating oldest articles).")
+    if not to_generate:
+        # All existing pages are published — fetch real news and create NEW articles
+        logger.info(
+            "All %d pages published — fetching news to generate %d new article topics...",
+            len(all_pages), n_pages,
+        )
+        if args.dry_run:
+            logger.info("DRY RUN — would fetch news and ask Gemini for new article topics.")
+            return
+
+        headlines = fetch_headlines()
+        if not headlines:
+            logger.warning("No news headlines fetched — skipping this run.")
+            return
+
+        all_slugs = {p["slug"] for p in all_pages}
+        new_specs = generate_new_page_specs_from_news(headlines, all_slugs, n=n_pages)
+        if not new_specs:
+            logger.warning("Gemini returned no new topic specs — skipping this run.")
+            return
+
+        append_pages(new_specs)
+        # Reload so to_generate reflects the freshly added specs
+        all_pages = load_pages()
+        to_generate = [p for p in new_specs if p["slug"] not in published_slugs]
+        logger.info("Added %d new article topic(s); will generate them now.", len(to_generate))
+
     else:
         logger.info("Publishing %d new page(s).", len(to_generate))
 
     if args.dry_run:
-        label = "refresh" if is_refresh else "generate"
-        logger.info("DRY RUN — would %s:", label)
+        logger.info("DRY RUN — would generate:")
         for p in to_generate:
             logger.info("  [%s] %s → %s", p["page_type"], p["primary_keyword"], p["slug"])
         return
@@ -175,9 +183,8 @@ def main() -> None:
 
         # Re-check on disk right before each Gemini call — guards against
         # concurrent runs or a previous iteration writing the file.
-        # Skip this guard in refresh mode: we *want* to overwrite.
         out_path = CONTENT_DIR / page_type / f"{slug}.md"
-        if not is_refresh and out_path.exists():
+        if out_path.exists():
             logger.info("Skip (already exists): %s", slug)
             skipped_count += 1
             continue

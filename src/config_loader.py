@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import logging
 import os
 from pathlib import Path
 from typing import Any
 
 import yaml
+
+logger = logging.getLogger(__name__)
 
 CONFIG_DIR = Path(__file__).parent.parent / "config"
 
@@ -55,6 +58,21 @@ def get_last_updated_dates(content_dir: Path) -> dict[str, str]:
         except Exception:  # noqa: BLE001
             pass
     return dates
+
+
+def append_pages(new_pages: list[dict]) -> None:
+    """Append new page specs to config/pages.yaml (skips duplicates by slug)."""
+    path = CONFIG_DIR / "pages.yaml"
+    data = _load("pages.yaml")
+    existing: list[dict] = data.get("pages", [])
+    existing_slugs = {p["slug"] for p in existing}
+    to_add = [p for p in new_pages if p["slug"] not in existing_slugs]
+    if not to_add:
+        return
+    data["pages"] = existing + to_add
+    with open(path, "w", encoding="utf-8") as f:
+        yaml.dump(data, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
+    logger.info("Appended %d new page spec(s) to pages.yaml", len(to_add))
 
 
 def get_site_config() -> dict:
