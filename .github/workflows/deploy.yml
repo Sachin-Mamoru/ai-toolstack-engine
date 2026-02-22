@@ -118,6 +118,17 @@ jobs:
           fi
           python scripts/daily_run.py --pages "$PAGES_PER_DAY" $DRY_FLAG
 
+      # ── Print generation errors if any ───────────────────
+      - name: Print generation error log
+        if: always()
+        run: |  
+          if [ -f generation_errors.txt ]; then
+            echo "=== generation_errors.txt ==="
+            cat generation_errors.txt
+          else
+            echo "No generation_errors.txt found"
+          fi
+
       # ── Build static site ─────────────────────────────────
       - name: Build static site
         env:

@@ -479,11 +479,15 @@ def generate_page_content(
 
     logger.info("Generating content for: %s", page["slug"])
     raw = _call_gemini_with_retry(client, model, prompt)
+    logger.debug("Raw response for %s (first 500 chars): %s", page["slug"], raw[:500])
 
     try:
         result = _parse_json_response(raw)
     except (json.JSONDecodeError, ValueError) as exc:
-        logger.error("Failed to parse JSON for %s: %s\nRaw:\n%s", page["slug"], exc, raw[:500])
+        logger.error(
+            "JSON parse failed for %s: %s\nFirst 800 chars of raw:\n%s\nLast 200 chars:\n%s",
+            page["slug"], exc, raw[:800], raw[-200:],
+        )
         raise
 
     # Validate and normalise
