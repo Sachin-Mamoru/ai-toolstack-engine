@@ -1,6 +1,9 @@
 name: Daily Generate & Deploy
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     # Run at 03:17 UTC every day
     - cron: "17 3 * * *"
