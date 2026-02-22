@@ -193,11 +193,24 @@ def _build_tools_context(page: dict, tools: list[dict]) -> str:
 
     lines = []
     for t in relevant[:10]:  # cap at 10 tools to keep prompt tight
+        raw_features = t.get("features", []) or []
+        features = []
+        for f in raw_features[:3]:
+            if isinstance(f, str):
+                features.append(f)
+            elif isinstance(f, dict):
+                # Handle {FeatureName: description} or {name: ..., title: ...} dicts
+                label = f.get("name") or f.get("title")
+                if not label:
+                    # Use the first key as the feature label
+                    first_key = next(iter(f), None)
+                    label = first_key if first_key else str(f)
+                features.append(label)
         lines.append(
             f"- name: {t['name']}\n"
             f"  category: {t.get('category', 'unknown')}\n"
             f"  pricing: {t.get('pricing_summary', 'see website')}\n"
-            f"  features: {'; '.join(t.get('features', [])[:3])}"
+            f"  features: {'; '.join(features)}"
         )
     return "\n".join(lines)
 
