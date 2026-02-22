@@ -56,7 +56,7 @@ jobs:
         run: ruff check src/ scripts/ tests/
 
       - name: Run black format check
-        run: black --check src/ scripts/ tests/
+        run: black --check --line-length 100 src/ scripts/ tests/
 
       # ── Unit tests ────────────────────────────────────────
       - name: Run unit tests
