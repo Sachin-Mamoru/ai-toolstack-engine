@@ -138,7 +138,7 @@ def main() -> None:
             save_markdown(page_spec, generated)
             generated_count += 1
         except Exception as exc:
-            logger.error("Failed to generate %s: %s", page_spec["slug"], exc)
+            logger.exception("Failed to generate %s: %s", page_spec["slug"], exc)
             # Continue with remaining pages rather than aborting the whole run
             continue
 

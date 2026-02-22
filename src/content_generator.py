@@ -20,14 +20,17 @@ logger = logging.getLogger(__name__)
 
 # Ranked preference list – _resolve_model() picks the first one the key can reach.
 GEMINI_MODEL_PREFERENCE = [
-    "gemini-2.0-flash-lite",
-    "gemini-2.0-flash-lite-001",
-    "gemini-2.0-flash",
-    "gemini-2.0-flash-001",
+    # 2.5 series first — confirmed available on most API key tiers
     "gemini-2.5-flash",
     "gemini-2.5-flash-preview-04-17",
     "gemini-2.5-pro",
     "gemini-2.5-pro-preview-03-25",
+    # 2.0 series (may not be available on free/new-user tier)
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-001",
+    "gemini-2.0-flash-lite",
+    "gemini-2.0-flash-lite-001",
+    # 1.5 series fallback
     "gemini-1.5-pro-002",
     "gemini-1.5-pro-001",
     "gemini-1.5-pro",
@@ -37,12 +40,20 @@ GEMINI_MODEL_PREFERENCE = [
     "gemini-1.0-pro",
 ]
 
-_MAX_RETRIES = 3
-_RETRY_DELAY = 5  # seconds
+_MAX_RETRIES = 5
+# Seconds to wait between article generations (courtesy pacing ~20 RPM).
+INTER_ARTICLE_DELAY_S = 3
+# On 429 / RESOURCE_EXHAUSTED, wait past the full quota window.
+RETRY_429_WAIT_S = 65
 
 # Module-level cache so model resolution only happens once per run
 _cached_client: genai.Client | None = None
 _cached_model: str | None = None
+
+
+def _is_rate_limit(exc: BaseException) -> bool:
+    """Return True when the exception is a 429 / RESOURCE_EXHAUSTED."""
+    return "429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc)
 
 
 def _is_permanent(exc: BaseException) -> bool:
@@ -384,10 +395,13 @@ def _parse_json_response(raw: str) -> dict[str, Any]:
 
 
 def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> str:
-    """Call Gemini API with exponential back-off retry.
+    """Call Gemini API with retry logic.
 
-    Permanent errors (404, 400, 403) are raised immediately without retrying.
+    - Permanent errors (404, 400, 403): raised immediately, no retry.
+    - 429 / RESOURCE_EXHAUSTED: wait RETRY_429_WAIT_S (65 s) to clear quota window.
+    - Other transient errors: exponential back-off (4 * 2^attempt, max 60 s).
     """
+    last_exc: Exception | None = None
     for attempt in range(1, _MAX_RETRIES + 1):
         try:
             response = client.models.generate_content(
@@ -403,15 +417,28 @@ def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> st
                     "Gemini returned None text (safety block or empty response)"
                 )
             return response.text
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
+            last_exc = exc
             if _is_permanent(exc):
                 logger.error("Permanent API error (not retrying): %s", exc)
                 raise
-            logger.warning("Gemini call attempt %d failed: %s", attempt, exc)
-            if attempt < _MAX_RETRIES:
-                time.sleep(_RETRY_DELAY * attempt)
+            if _is_rate_limit(exc):
+                logger.warning(
+                    "Rate limit hit (attempt %d/%d) – waiting %ds before retry",
+                    attempt, _MAX_RETRIES, RETRY_429_WAIT_S,
+                )
+                time.sleep(RETRY_429_WAIT_S)
             else:
-                raise
+                wait = min(4 * (2 ** (attempt - 1)), 60)
+                logger.warning(
+                    "Transient error (attempt %d/%d) – retrying in %ds: %s",
+                    attempt, _MAX_RETRIES, wait, exc,
+                )
+                if attempt < _MAX_RETRIES:
+                    time.sleep(wait)
+                else:
+                    raise
+    raise last_exc  # type: ignore[misc]
 
 
 def generate_page_content(
@@ -471,6 +498,9 @@ def generate_page_content(
         logger.warning("Article for %s is short: %d words", page["slug"], wc)
 
     logger.info("Generated %d words for %s", wc, page["slug"])
+    # Courtesy pacing: rate limiting is per-minute, so a small delay keeps
+    # requests well under the RPM budget across a batch run.
+    time.sleep(INTER_ARTICLE_DELAY_S)
     return result
 
 
