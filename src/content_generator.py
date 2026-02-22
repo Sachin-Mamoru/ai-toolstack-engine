@@ -18,7 +18,7 @@ from .utils import truncate, utc_today, word_count
 
 logger = logging.getLogger(__name__)
 
-_MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+_MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 _MAX_RETRIES = 3
 _RETRY_DELAY = 5  # seconds
 
