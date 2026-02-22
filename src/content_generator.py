@@ -70,8 +70,9 @@ def _resolve_model(client: genai.Client) -> str:
         for m in client.models.list():
             name: str = getattr(m, "name", "") or ""
             short = name.removeprefix("models/")
-            supported = getattr(m, "supported_generation_methods", []) or []
-            if "generateContent" in supported:
+            # Include all text-generation models; the SDK doesn't reliably
+            # expose supported_generation_methods in every version.
+            if short and ("gemini" in short or "flash" in short or "pro" in short):
                 available.add(short)
         logger.info("Live model list fetched (%d models)", len(available))
     except Exception as exc:  # noqa: BLE001
@@ -354,7 +355,7 @@ def _call_gemini_with_retry(client: genai.Client, model: str, prompt: str) -> st
                 contents=prompt,
                 config=genai_types.GenerateContentConfig(
                     temperature=0.4,
-                    max_output_tokens=4096,
+                    max_output_tokens=8192,
                 ),
             )
             return response.text
