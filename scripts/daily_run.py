@@ -16,10 +16,13 @@ import logging
 import sys
 from pathlib import Path
 
+import yaml
+
 # Make sure src/ is importable when run as a script
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.config_loader import (
+    get_last_updated_dates,
     get_published_slugs,
     get_site_config,
     load_affiliates,
@@ -56,10 +59,27 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def pick_next_pages(all_pages: list[dict], published_slugs: set[str], n: int) -> list[dict]:
-    """Return the next N un-published pages in config order."""
+def pick_next_pages(
+    all_pages: list[dict],
+    published_slugs: set[str],
+    n: int,
+    last_updated: dict[str, str] | None = None,
+) -> tuple[list[dict], bool]:
+    """Return (pages_to_generate, is_refresh).
+
+    - First priority: unpublished pages (in config order).
+    - When all are published: pick the N pages with the oldest last_updated date
+      so content stays fresh and the cron never sits idle.
+    """
     pending = [p for p in all_pages if p["slug"] not in published_slugs]
-    return pending[:n]
+    if pending:
+        return pending[:n], False
+
+    # All published — refresh oldest articles
+    dates = last_updated or {}
+    # Pages with no recorded date sort first (treat as oldest)
+    by_age = sorted(all_pages, key=lambda p: dates.get(p["slug"], "0000-00-00"))
+    return by_age[:n], True
 
 
 def save_markdown(page_spec: dict, generated: dict) -> Path:
@@ -70,6 +90,19 @@ def save_markdown(page_spec: dict, generated: dict) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{slug}.md"
 
+    # Preserve original date_published if the file already exists (refresh case)
+    date_published = utc_today()
+    if out_path.exists():
+        try:
+            existing = out_path.read_text(encoding="utf-8")
+            if existing.startswith("---"):
+                end = existing.index("---", 3)
+                fm = yaml.safe_load(existing[3:end])
+                if fm and "date_published" in fm:
+                    date_published = str(fm["date_published"])
+        except Exception:  # noqa: BLE001
+            pass
+
     # Front-matter + article
     front_matter = "\n".join(
         [
@@ -79,7 +112,7 @@ def save_markdown(page_spec: dict, generated: dict) -> Path:
             f"page_type: {page_type}",
             f"primary_keyword: {page_spec.get('primary_keyword', '')}",
             f"meta_description: {json.dumps(generated.get('meta_description', ''))}",
-            f"date_published: {utc_today()}",
+            f"date_published: {date_published}",
             f"last_updated: {utc_today()}",
             "---",
             "",
@@ -106,6 +139,7 @@ def main() -> None:
 
     all_pages = load_pages()
     published_slugs = get_published_slugs(CONTENT_DIR)
+    last_updated_dates = get_last_updated_dates(CONTENT_DIR)
     logger.info(
         "Total pages: %d | Published: %d | Pending: %d",
         len(all_pages),
@@ -113,13 +147,19 @@ def main() -> None:
         len(all_pages) - len(published_slugs),
     )
 
-    to_generate = pick_next_pages(all_pages, published_slugs, n_pages)
+    to_generate, is_refresh = pick_next_pages(all_pages, published_slugs, n_pages, last_updated_dates)
     if not to_generate:
-        logger.info("All pages are already published. Nothing to do.")
+        logger.info("No pages to generate. Nothing to do.")
         return
 
+    if is_refresh:
+        logger.info("All pages published — running in REFRESH mode (re-generating oldest articles).")
+    else:
+        logger.info("Publishing %d new page(s).", len(to_generate))
+
     if args.dry_run:
-        logger.info("DRY RUN — would generate:")
+        label = "refresh" if is_refresh else "generate"
+        logger.info("DRY RUN — would %s:", label)
         for p in to_generate:
             logger.info("  [%s] %s → %s", p["page_type"], p["primary_keyword"], p["slug"])
         return
@@ -135,8 +175,9 @@ def main() -> None:
 
         # Re-check on disk right before each Gemini call — guards against
         # concurrent runs or a previous iteration writing the file.
+        # Skip this guard in refresh mode: we *want* to overwrite.
         out_path = CONTENT_DIR / page_type / f"{slug}.md"
-        if out_path.exists():
+        if not is_refresh and out_path.exists():
             logger.info("Skip (already exists): %s", slug)
             skipped_count += 1
             continue

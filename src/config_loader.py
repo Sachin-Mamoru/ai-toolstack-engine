@@ -40,6 +40,23 @@ def get_published_slugs(content_dir: Path) -> set[str]:
     return slugs
 
 
+def get_last_updated_dates(content_dir: Path) -> dict[str, str]:
+    """Return {slug: last_updated_date_str} by reading front-matter of each file."""
+    dates: dict[str, str] = {}
+    for md_file in content_dir.rglob("*.md"):
+        try:
+            text = md_file.read_text(encoding="utf-8")
+            # Front-matter is between the first two '---' lines
+            if text.startswith("---"):
+                end = text.index("---", 3)
+                fm = yaml.safe_load(text[3:end])
+                if fm and "last_updated" in fm:
+                    dates[md_file.stem] = str(fm["last_updated"])
+        except Exception:  # noqa: BLE001
+            pass
+    return dates
+
+
 def get_site_config() -> dict:
     """Return site-level configuration with sensible defaults."""
     return {
