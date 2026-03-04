@@ -4,147 +4,147 @@
     <title>AI ToolStack Engine</title>
     <link>https://aidevtools.me/</link>
     <description>Independent comparisons of AI tools for developers and DevOps engineers. No hype — just practical breakdowns to help you choose the right tool.</description>
-    <lastBuildDate>Tue, 03 Mar 2026 04:58:49 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Mar 2026 04:54:20 +0000</lastBuildDate>
     <atom:link href="https://aidevtools.me/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[Linear vs Jira: AI-Powered Project Management for Dev Teams]]></title>
+    <link>https://aidevtools.me/vs/linear-vs-jira-ai/</link>
+    <guid isPermaLink="true">https://aidevtools.me/vs/linear-vs-jira-ai/</guid>
+    <description><![CDATA[Pick the best project management tool with AI capabilities]]></description>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[Warp vs iTerm2: AI-Powered Terminal Compared]]></title>
+    <link>https://aidevtools.me/vs/warp-vs-iterm2-ai/</link>
+    <guid isPermaLink="true">https://aidevtools.me/vs/warp-vs-iterm2-ai/</guid>
+    <description><![CDATA[Compare Warp's AI features against traditional iTerm2]]></description>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[Codeium vs GitHub Copilot: Free vs Paid AI Code Completion]]></title>
+    <link>https://aidevtools.me/vs/codeium-vs-github-copilot/</link>
+    <guid isPermaLink="true">https://aidevtools.me/vs/codeium-vs-github-copilot/</guid>
+    <description><![CDATA[Decide if Codeium free tier is good enough vs Copilot paid]]></description>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
+  </item>
   <item>
     <title><![CDATA[JetBrains AI Assistant vs GitHub Copilot: IDE AI Compared]]></title>
     <link>https://aidevtools.me/vs/jetbrains-ai-vs-github-copilot/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/jetbrains-ai-vs-github-copilot/</guid>
     <description><![CDATA[Choose between JetBrains native AI and GitHub Copilot for JetBrains IDEs]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Claude vs Gemini for Code Generation: Developer Comparison]]></title>
     <link>https://aidevtools.me/vs/claude-vs-gemini-code-generation/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/claude-vs-gemini-code-generation/</guid>
     <description><![CDATA[Determine whether Claude or Gemini produces better code]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[GitHub Copilot vs Amazon CodeWhisperer: Which is Better?]]></title>
     <link>https://aidevtools.me/vs/github-copilot-vs-codewhisperer/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/github-copilot-vs-codewhisperer/</guid>
     <description><![CDATA[Compare the two most popular AI code completion tools]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[PagerDuty vs OpsGenie: AI-Powered Incident Management Compared]]></title>
     <link>https://aidevtools.me/vs/pagerduty-vs-opsgenie-ai/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/pagerduty-vs-opsgenie-ai/</guid>
     <description><![CDATA[Choose an incident management platform with the best AI capabilities]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Terraform vs Pulumi: AI and Developer Experience Compared]]></title>
     <link>https://aidevtools.me/vs/terraform-vs-pulumi-ai/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/terraform-vs-pulumi-ai/</guid>
     <description><![CDATA[Decide which IaC tool has better AI tooling and developer ergonomics]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[AWS CodeGuru vs GitHub Copilot: Code Review and Assistance]]></title>
     <link>https://aidevtools.me/vs/aws-codeguru-vs-github-copilot/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/aws-codeguru-vs-github-copilot/</guid>
     <description><![CDATA[Compare AWS-native code review against GitHub Copilot]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Grafana vs Datadog: Monitoring and Observability Compared]]></title>
     <link>https://aidevtools.me/vs/grafana-vs-datadog/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/grafana-vs-datadog/</guid>
     <description><![CDATA[Choose between open-source Grafana and full-service Datadog]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Snyk vs SonarQube: Security and Code Quality Compared]]></title>
     <link>https://aidevtools.me/vs/snyk-vs-sonarqube/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/snyk-vs-sonarqube/</guid>
     <description><![CDATA[Pick the best tool for static analysis and vulnerability scanning]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Devin vs GitHub Copilot Workspace: AI Agent Comparison]]></title>
     <link>https://aidevtools.me/vs/devin-vs-github-copilot-workspace/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/devin-vs-github-copilot-workspace/</guid>
     <description><![CDATA[Evaluate autonomous AI coding agents for real-world tasks]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Cursor vs Sourcegraph Cody: AI Coding Assistant Comparison]]></title>
     <link>https://aidevtools.me/vs/cursor-vs-cody/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/cursor-vs-cody/</guid>
     <description><![CDATA[Compare Cursor and Sourcegraph Cody for large codebase navigation]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[CodeRabbit vs CodeClimate: AI Code Review Compared]]></title>
     <link>https://aidevtools.me/vs/coderabbit-vs-codeclimate/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/coderabbit-vs-codeclimate/</guid>
     <description><![CDATA[Choose the right automated code review platform]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[GitHub Copilot vs Tabnine: Code Completion Showdown]]></title>
     <link>https://aidevtools.me/vs/github-copilot-vs-tabnine/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/github-copilot-vs-tabnine/</guid>
     <description><![CDATA[Compare GitHub Copilot and Tabnine for autocomplete quality and privacy]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Datadog vs New Relic: AI-Powered Observability Compared]]></title>
     <link>https://aidevtools.me/vs/datadog-vs-new-relic-ai/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/datadog-vs-new-relic-ai/</guid>
     <description><![CDATA[Choose between Datadog and New Relic for AI-driven observability]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Claude vs ChatGPT for Coding: A Developer's Comparison]]></title>
     <link>https://aidevtools.me/vs/claude-vs-chatgpt-for-coding/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/claude-vs-chatgpt-for-coding/</guid>
     <description><![CDATA[Determine whether Claude or ChatGPT is better for writing code]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[GitHub Copilot vs Cursor: Which AI Coding Assistant is Better?]]></title>
     <link>https://aidevtools.me/vs/github-copilot-vs-cursor/</link>
     <guid isPermaLink="true">https://aidevtools.me/vs/github-copilot-vs-cursor/</guid>
     <description><![CDATA[Decide between GitHub Copilot and Cursor for daily coding]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Best AI Tools for Git Workflows in 2026]]></title>
     <link>https://aidevtools.me/best/best-ai-tools-for-git-workflows/</link>
     <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-git-workflows/</guid>
     <description><![CDATA[Streamline commits, merges, and branching strategies using AI]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   <item>
     <title><![CDATA[Best AI Tools for Performance and Load Testing in 2026]]></title>
     <link>https://aidevtools.me/best/best-ai-tools-for-performance-testing/</link>
     <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-performance-testing/</guid>
     <description><![CDATA[Run smarter load tests and find bottlenecks using AI]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[Best AI Tools for Go (Golang) Developers in 2026]]></title>
-    <link>https://aidevtools.me/best/best-ai-tools-for-golang-developers/</link>
-    <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-golang-developers/</guid>
-    <description><![CDATA[Find AI coding assistants and review tools optimized for Go]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[Best AI Tools for Cloud Security in 2026]]></title>
-    <link>https://aidevtools.me/best/best-ai-tools-for-cloud-security/</link>
-    <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-cloud-security/</guid>
-    <description><![CDATA[Protect cloud environments from misconfigurations and breaches using AI]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[Best AI Tools for AWS in 2026]]></title>
-    <link>https://aidevtools.me/best/best-ai-tools-for-aws/</link>
-    <guid isPermaLink="true">https://aidevtools.me/best/best-ai-tools-for-aws/</guid>
-    <description><![CDATA[Use AI to manage, optimize, and secure AWS infrastructure]]></description>
-    <pubDate>Tue, 03 Mar 2026 04:58:49 +0000</pubDate>
+    <pubDate>Wed, 04 Mar 2026 04:54:20 +0000</pubDate>
   </item>
   </channel>
 </rss>
