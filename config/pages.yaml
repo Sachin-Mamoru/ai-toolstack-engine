@@ -387,3 +387,16 @@ pages:
   meta_description: Compare Claude Opus 4.7 and Ensemble AI Models for reliable code
     review. See which advanced AI model offers superior accuracy and insights for
     your codebase.
+- title: Best Design to Code Tools for Developers in 2026
+  slug: best-design-to-code-tools
+  page_type: best
+  primary_keyword: best design to code tools
+  meta_description: Explore the top AI-powered design to code tools for developers
+    in 2026. Streamline your workflow from UI/UX design to production-ready code.
+- title: Best AI Agent Security Scanners for IDEs in 2026
+  slug: best-ai-agent-security-scanners-ides
+  page_type: best
+  primary_keyword: ai agent security scanners ides
+  meta_description: Discover the best AI agent security scanners for IDEs in 2026
+    to verify your AI agents and prevent vulnerabilities. Protect your development
+    environment.
