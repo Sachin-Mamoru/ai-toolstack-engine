@@ -27,6 +27,7 @@ from src.site_builder import (
     build_static_pages,
     copy_static_assets,
     render_content_page,
+    write_ads_txt,
 )
 from src.sitemap import generate_robots_txt, generate_rss_feed, generate_sitemap
 
@@ -129,6 +130,7 @@ def build_all() -> None:
     generate_rss_feed(all_pages, published_slugs)
     build_static_pages()
     copy_static_assets()
+    write_ads_txt()
 
     # Copy CNAME so GitHub Pages keeps the custom domain after every deploy
     cname_src = REPO_ROOT / "CNAME"

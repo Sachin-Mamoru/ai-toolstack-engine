@@ -306,6 +306,21 @@ def copy_static_assets() -> None:
         logger.info("Copied static assets")
 
 
+def write_ads_txt() -> None:
+    """Write ads.txt to site/ if ADSENSE_PUBLISHER_ID is configured."""
+    cfg = get_site_config()
+    publisher_id = cfg.get("adsense_publisher_id", "").strip()
+    if not publisher_id:
+        logger.info("ADSENSE_PUBLISHER_ID not set — skipping ads.txt")
+        return
+    ads_txt_path = SITE_DIR / "ads.txt"
+    ads_txt_path.write_text(
+        f"google.com, {publisher_id}, DIRECT, f08c47fec0942fa0\n",
+        encoding="utf-8",
+    )
+    logger.info("Wrote ads.txt for publisher %s", publisher_id)
+
+
 # ---------------------------------------------------------------------------
 # AdSense-readiness static pages
 # ---------------------------------------------------------------------------
