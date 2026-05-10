@@ -578,3 +578,16 @@ pages:
   primary_keyword: agentops vs langfuse ai agent observability
   meta_description: Compare AgentOps and Langfuse, two leading AI agent observability
     tools for 2026. Find out which platform best suits your AI agent monitoring needs.
+- title: 9 Best AI Tools for Spec-Driven Development in 2026
+  slug: best-ai-tools-spec-driven-development-2026
+  page_type: best
+  primary_keyword: ai tools for spec-driven development
+  meta_description: Discover the top 9 AI tools for spec-driven development in 2026,
+    comparing Kiro, BMAD, GSD, and more to streamline your software projects.
+- title: 10 Best AI Security Tools for the Software Development Lifecycle (SDLC) in
+    2026
+  slug: best-ai-security-tools-software-development-lifecycle-2026
+  page_type: best
+  primary_keyword: ai security tools sdlc
+  meta_description: Explore the top 10 AI security tools for securing AI applications
+    and AI-generated code across the entire software development lifecycle in 2026.
