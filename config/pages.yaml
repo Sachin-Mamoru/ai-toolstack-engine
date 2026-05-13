@@ -617,3 +617,17 @@ pages:
   primary_keyword: best ai ides
   meta_description: Discover the leading AI-powered Integrated Development Environments
     (IDEs) for developers in 2026, revolutionizing coding with intelligent assistance.
+- title: IBM Bob vs. Google Vibe Coding Assistant (2026)
+  slug: ibm-bob-vs-google-vibe-coding-assistant-2026
+  page_type: vs
+  primary_keyword: ibm bob vs google vibe coding assistant
+  meta_description: Compare IBM Bob and Google Vibe Coding Assistant for developers
+    in 2026. Discover features, performance, and best use cases for these AI coding
+    partners.
+- title: Anthropic AI Code Review Tool vs. Pervaziv AI GitHub Action (2026)
+  slug: anthropic-ai-code-review-tool-vs-pervaziv-ai-github-action-2026
+  page_type: vs
+  primary_keyword: anthropic code review tool vs pervaziv ai
+  meta_description: Compare Anthropic's new AI code review tool with Pervaziv AI Code
+    Review 2.0 GitHub Action for developers in 2026. Find the best solution for your
+    codebase.
