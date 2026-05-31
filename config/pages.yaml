@@ -843,3 +843,16 @@ pages:
   meta_description: Explore the top 10 LLM security tools and frameworks for developers
     in 2026. Protect your AI applications and prevent vulnerabilities with these essential
     solutions.
+- title: 'Perplexity Bumblebee vs. Chainguard: Which AI Dev Scanner is Best in 2026?'
+  slug: perplexity-bumblebee-vs-chainguard-ai-dev-scanner-2026
+  page_type: vs
+  primary_keyword: perplexity bumblebee vs chainguard
+  meta_description: Compare Perplexity Bumblebee and Chainguard, two leading AI-powered
+    dev scanners. Discover which tool offers superior read-only security analysis
+    for your development workflow in 2026.
+- title: 'Microsoft''s New AI Coding Model vs. OpenAI: A 2026 Developer Showdown'
+  slug: microsoft-new-ai-coding-model-vs-openai-2026
+  page_type: vs
+  primary_keyword: microsoft ai coding model vs openai
+  meta_description: Microsoft is launching a new AI coding model to challenge OpenAI.
+    See how they stack up in 2026 for code generation, assistance, and developer productivity.
