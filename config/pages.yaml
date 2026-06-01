@@ -856,3 +856,17 @@ pages:
   primary_keyword: microsoft ai coding model vs openai
   meta_description: Microsoft is launching a new AI coding model to challenge OpenAI.
     See how they stack up in 2026 for code generation, assistance, and developer productivity.
+- title: Microsoft's Latest AI Coding Model vs. OpenAI Codex App 2026
+  slug: microsoft-latest-ai-coding-model-vs-openai-codex-app-2026
+  page_type: vs
+  primary_keyword: microsoft ai coding model vs openai codex app
+  meta_description: Compare Microsoft's new AI coding model against OpenAI's standalone
+    Codex app for Apple computers. Discover which AI assistant best suits your development
+    workflow in 2026.
+- title: IBM Bob vs. GitHub Copilot for AI Coding Assistance 2026
+  slug: ibm-bob-vs-github-copilot-ai-coding-assistance-2026
+  page_type: vs
+  primary_keyword: ibm bob vs github copilot
+  meta_description: A head-to-head comparison of IBM Bob and GitHub Copilot, two leading
+    AI coding assistants. Find out which tool offers superior features for developers
+    in 2026.
