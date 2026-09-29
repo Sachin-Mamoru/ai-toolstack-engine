@@ -1626,3 +1626,18 @@ pages:
   meta_description: Explore the top AI code quality and reliability tools for safety-critical
     software in 2026. Ensure robust and trustworthy AI-generated code for critical
     systems.
+- title: Snyk Evo Agentic Development Security vs. AI Vulnerability Scanners for Coding
+    Assistant Protection 2026
+  slug: snyk-evo-agentic-security-vs-ai-vulnerability-scanners-coding-assistant-2026
+  page_type: vs
+  primary_keyword: ai coding assistant session security
+  meta_description: Compare Snyk Evo's agentic development security approach with
+    AI vulnerability scanners to protect coding assistant sessions from attacks like
+    'Shai-Hulud'.
+- title: AI-Enhanced Compilers vs. Post-Generation AI Code Refinement Tools 2026
+  slug: ai-enhanced-compilers-vs-post-generation-code-refinement-2026
+  page_type: vs
+  primary_keyword: ai code generation quality
+  meta_description: Explore how AI-enhanced compilers and post-generation refinement
+    tools improve the quality and reliability of AI-generated code, addressing industry
+    concerns.
