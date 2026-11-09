@@ -1995,3 +1995,15 @@ pages:
   primary_keyword: claude code vs cursor
   meta_description: Compare Claude Code and Cursor to find the best AI coding agent
     for your development needs in 2026. See how they stack up in performance and features.
+- title: Best AI Coding Assistants for Release Notes in 2026
+  slug: best-ai-coding-assistants-release-notes-2026
+  page_type: best
+  primary_keyword: ai coding assistant for release notes
+  meta_description: Discover the top AI coding assistants that can automate writing
+    your release notes in 2026, boosting developer productivity and consistency.
+- title: Best LLM Hallucination Detection Tools for Code Generation in 2026
+  slug: best-llm-hallucination-detection-tools-code-generation-2026
+  page_type: best
+  primary_keyword: llm hallucination detection tools code
+  meta_description: Combat 'nonsense and malicious packages' with the best LLM hallucination
+    detection tools for code generation in 2026, ensuring code quality and security.
